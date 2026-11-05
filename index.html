@@ -2040,6 +2040,7 @@ function initQuest() {
 /* ---------- форма заявки на работу ---------- */
 var JOB_COOLDOWN_MS = 30 * 60 * 1000;
 var JOB_KEY = "prz_job_last";
+var APPLY_URL = "https://ntfy.sh/prz-zayavki-4c81f2d9";
 
 function jobWaitLeft() {
   try {
@@ -2082,8 +2083,7 @@ function saveJobLocally(data) {
   return jobs[0];
 }
 
-function jobAsText(job) {
-  var d = job.data;
+function jobAsText(d) {
   return "Заявка на работу\n" +
     "Имя: " + d.name + "\n" +
     "Возраст: " + d.age + "\n" +
@@ -2146,10 +2146,10 @@ function initJobForm() {
     note.className = "jobform__note";
     note.textContent = "Отправляем заявку...";
 
-    fetch("/api/apply", {
+    fetch(APPLY_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+      body: jobAsText(data)
     })
       .then(function (r) {
         if (!r.ok) throw new Error("bad status " + r.status);
@@ -2163,7 +2163,7 @@ function initJobForm() {
         var job = saveJobLocally(data);
         note.className = "jobform__note";
         note.textContent = "Заявка сохранена на этом устройстве и скопирована. Отправь её Камилю.";
-        copyText(jobAsText(job), "Заявка скопирована");
+        copyText(jobAsText(job.data), "Заявка скопирована");
         form.reset();
         updateJobCooldown();
       });
