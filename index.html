@@ -2073,6 +2073,26 @@ function updateJobCooldown() {
   }
 }
 
+function saveJobLocally(data) {
+  var jobs = read("prz_jobs", []);
+  if (!Array.isArray(jobs)) jobs = [];
+  jobs.unshift({ at: Date.now(), data: data });
+  jobs = jobs.slice(0, 20);
+  write("prz_jobs", jobs);
+  return jobs[0];
+}
+
+function jobAsText(job) {
+  var d = job.data;
+  return "Заявка на работу\n" +
+    "Имя: " + d.name + "\n" +
+    "Возраст: " + d.age + "\n" +
+    "Должность: " + d.position + "\n" +
+    "Контакт: " + d.contact + "\n" +
+    "Опыт: " + d.experience + "\n" +
+    "Почему: " + d.why;
+}
+
 function validateJobForm(data) {
   if (!data.name || data.name.length < 2) return "Напиши, как тебя зовут";
   var age = parseInt(data.age, 10);
@@ -2140,9 +2160,12 @@ function initJobForm() {
         updateJobCooldown();
       })
       .catch(function () {
-        note.className = "jobform__note is-bad";
-        note.textContent = "Не отправилось. Попробуй ещё раз через минуту.";
-        if (submitBtn) submitBtn.disabled = false;
+        var job = saveJobLocally(data);
+        note.className = "jobform__note";
+        note.textContent = "Заявка сохранена на этом устройстве и скопирована. Отправь её Камилю.";
+        copyText(jobAsText(job), "Заявка скопирована");
+        form.reset();
+        updateJobCooldown();
       });
   });
 }
