@@ -1,0 +1,2794 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pereprodazhniki — арбузы оптом и в розницу</title>
+<meta name="description" content="Pereprodazhniki: перепродаём арбузы с доставкой. Шутим, но возим настоящие арбузы.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='34' r='27' fill='%231f9d47'/%3E%3Cpath d='M5 34a27 27 0 0 0 54 0z' fill='%23e63946'/%3E%3Cpath d='M4 34h56' stroke='%231f9d47' stroke-width='5'/%3E%3C/svg%3E">
+<style>
+/* Pereprodazhniki — тёмная тема */
+
+:root {
+  --bg: #06120b;
+  --bg-2: #0a2013;
+  --surface: #102a1a;
+  --surface-2: #16351f;
+  --line: #1f4a2b;
+  --green: #2fd35f;
+  --green-dim: #1c9c46;
+  --lime: #b6f06a;
+  --red: #ff4d5a;
+  --pink: #ff8fa3;
+  --text: #e9fff0;
+  --muted: #9dc4ab;
+  --radius: 22px;
+  --shadow: 0 12px 0 rgba(0, 0, 0, .35);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, system-ui, Arial, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(1200px 500px at 50% -10%, rgba(47, 211, 95, .18), transparent 70%),
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, .022) 0 30px, transparent 30px 60px),
+    linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 60%, #040c07 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* ---------- Бегущая строка ---------- */
+.marquee {
+  overflow: hidden;
+  background: #000;
+  color: var(--lime);
+  font-weight: 800;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  padding: 9px 0;
+  border-bottom: 2px solid var(--green-dim);
+}
+.marquee__row { display: inline-block; animation: slide 24s linear infinite; }
+@keyframes slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ---------- Шапка ---------- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 22px;
+  background: rgba(4, 12, 7, .92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+.logo__melon { font-size: 32px; animation: wobble 3.2s ease-in-out infinite; filter: drop-shadow(0 0 10px rgba(47, 211, 95, .5)); }
+@keyframes wobble { 0%, 100% { transform: rotate(-9deg); } 50% { transform: rotate(9deg); } }
+.logo__text {
+  font-size: clamp(15px, 2.2vw, 22px);
+  font-weight: 900;
+  letter-spacing: -.2px;
+  background: linear-gradient(90deg, #fff, var(--lime));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.nav { display: flex; gap: 16px; margin-left: auto; flex-wrap: wrap; }
+.nav a { color: var(--muted); text-decoration: none; font-weight: 600; }
+.nav a:hover { color: var(--lime); }
+
+.cart-btn {
+  background: var(--lime);
+  color: #06210f;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(182, 240, 106, .25);
+}
+.cart-btn:active { transform: translateY(3px); }
+.cart-btn__count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  margin-left: 6px;
+  border-radius: 50%;
+  background: var(--red);
+  color: #fff;
+  font-size: 13px;
+}
+
+/* ---------- Первый экран ---------- */
+.hero {
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 30px;
+  align-items: center;
+  padding: 64px 22px 44px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.hero__kicker {
+  display: inline-block;
+  background: var(--red);
+  color: #fff;
+  font-weight: 800;
+  padding: 6px 14px;
+  border-radius: 999px;
+  letter-spacing: .5px;
+  box-shadow: 0 6px 18px rgba(255, 77, 90, .3);
+}
+.hero__title {
+  font-size: clamp(36px, 6.6vw, 74px);
+  line-height: .95;
+  margin: 16px 0;
+  background: linear-gradient(180deg, #fff 30%, var(--lime));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 6px 0 rgba(0, 0, 0, .4));
+}
+.hero__desc { font-size: 18px; max-width: 46ch; color: var(--muted); }
+.hero__actions { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+.hero__joke {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border-left: 5px solid var(--green);
+  border-radius: 12px;
+  font-weight: 600;
+  max-width: 46ch;
+}
+.sold {
+  margin: 18px 0 0;
+  color: #eafff0;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, .45);
+  border: 1px solid var(--green);
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-size: 18px;
+}
+.sold b { color: var(--lime); font-size: 26px; display: inline-block; text-align: center; }
+.sold__dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--green);
+  animation: pulse 1.8s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(47, 211, 95, .7); }
+  70% { box-shadow: 0 0 0 12px rgba(47, 211, 95, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(47, 211, 95, 0); }
+}
+.sold.is-bump, .sold b.is-bump { animation: bump .5s ease; }
+@keyframes bump {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.14); background: rgba(182, 240, 106, .25); }
+  100% { transform: scale(1); }
+}
+.live-sold {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(47, 211, 95, .14);
+  border: 1px solid var(--green);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 9px 16px;
+  font-weight: 700; font-size: 14px; white-space: nowrap;
+}
+.live-sold b { color: var(--lime); font-size: 17px; }
+body.light .sold { background: #fff; color: #0d2b19; border-color: #12803c; }
+body.light .live-sold { background: #fff; color: #0d2b19; border-color: #12803c; }
+
+.btn {
+  border: 0;
+  border-radius: 16px;
+  padding: 14px 22px;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+.btn--big {
+  background: linear-gradient(180deg, var(--lime), #8ed13f);
+  color: #06210f;
+  box-shadow: 0 8px 0 #4d7a26;
+}
+.btn--big:active { transform: translateY(5px); box-shadow: 0 3px 0 #4d7a26; }
+.btn--ghost { background: transparent; color: var(--text); box-shadow: inset 0 0 0 2px var(--green); }
+.btn--ghost:hover { background: rgba(47, 211, 95, .12); }
+.btn--full { width: 100%; margin-top: 10px; }
+
+/* ---------- Арбуз ---------- */
+.hero__melon { position: relative; display: grid; place-items: center; }
+.melon {
+  position: relative;
+  width: min(330px, 72vw);
+  aspect-ratio: 1 / 1.15;
+  border-radius: 46% 46% 48% 48% / 58% 58% 42% 42%;
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255, 255, 255, .35) 0 7%, transparent 8%),
+    repeating-linear-gradient(100deg, #1c9c46 0 18px, #2fd35f 18px 36px);
+  box-shadow:
+    inset -14px -18px 0 rgba(0, 0, 0, .35),
+    0 0 60px rgba(47, 211, 95, .35);
+  animation: roll 6s ease-in-out infinite;
+}
+@keyframes roll { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+.melon__shine {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 34%;
+  height: 20%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .25);
+  filter: blur(10px);
+  transform: translate(-26%, -34%);
+}
+.hero__badge {
+  position: absolute;
+  right: 2%;
+  top: 4%;
+  background: var(--red);
+  color: #fff;
+  font-weight: 900;
+  text-align: center;
+  padding: 10px 14px;
+  border-radius: 18px;
+  transform: rotate(8deg);
+  box-shadow: var(--shadow);
+}
+.hero__badge--2 {
+  right: auto; left: 0; top: auto; bottom: 6%;
+  background: var(--surface-2);
+  border: 2px solid var(--green);
+  transform: rotate(-9deg);
+}
+
+/* ---------- Секции ---------- */
+.section { padding: 52px 22px; max-width: 1200px; margin: 0 auto; }
+.section--memes, .section--cta {
+  max-width: none;
+  background: rgba(0, 0, 0, .35);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.section--cta > *, .section--memes > * { max-width: 1200px; margin-left: auto; margin-right: auto; }
+.section__title {
+  font-size: clamp(26px, 4vw, 42px);
+  margin: 0 0 8px;
+  color: #fff;
+  letter-spacing: -.5px;
+}
+.section__sub { color: var(--muted); margin: 0 0 26px; }
+
+/* ---------- Каталог ---------- */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+.card {
+  position: relative;
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  border-radius: var(--radius);
+  padding: 18px;
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform .18s ease, border-color .18s ease;
+}
+.card:hover { transform: translateY(-4px); border-color: var(--green); }
+.card__icon { font-size: 50px; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .5)); }
+.card__name { font-size: 22px; margin: 0; color: #fff; }
+.card__desc { margin: 0; color: var(--muted); flex: 1; }
+.card__meta { display: flex; gap: 8px; flex-wrap: wrap; }
+.tag {
+  background: rgba(47, 211, 95, .14);
+  color: var(--lime);
+  border: 1px solid rgba(47, 211, 95, .3);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.card__foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.card__price { font-size: 24px; font-weight: 900; color: var(--lime); }
+.hit {
+  position: absolute;
+  top: -11px; right: -8px;
+  background: var(--red);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 5px 11px;
+  border-radius: 999px;
+  transform: rotate(7deg);
+  box-shadow: var(--shadow);
+}
+
+/* ---------- Мемы ---------- */
+.memes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+.meme { margin: 0; background: var(--surface); border-radius: 18px; overflow: hidden; border: 1px solid var(--line); }
+.meme__img { height: 190px; display: grid; place-items: center; background: linear-gradient(180deg, #1b2a6b, #0b1030); }
+.meme__img--green { background: linear-gradient(180deg, var(--green-dim), #0d3d1e); }
+.meme__img--seed { background: repeating-linear-gradient(45deg, #0d3d1e 0 14px, #1c9c46 14px 28px); }
+.meme__img--red { background: radial-gradient(circle at 40% 40%, #ff5f6d, #8c1024); }
+.meme__big {
+  font-family: Impact, "Arial Black", sans-serif;
+  font-size: 32px;
+  color: #fff;
+  text-align: center;
+  text-shadow: 3px 3px 0 #000;
+}
+.meme__cap {
+  padding: 12px 14px;
+  background: #000;
+  font-family: Impact, "Arial Black", sans-serif;
+  font-size: 20px;
+  text-align: center;
+  color: var(--lime);
+}
+
+/* ---------- Шаги / гарантии ---------- */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; }
+.step {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 20px;
+  border: 1px solid var(--line);
+}
+.step__num {
+  display: grid;
+  place-items: center;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--lime), #7dbb39);
+  color: #06210f;
+  font-weight: 900;
+  font-size: 20px;
+  margin-bottom: 10px;
+  box-shadow: 0 6px 16px rgba(182, 240, 106, .25);
+}
+.step h3 { margin: 0 0 6px; color: #fff; }
+.step p { margin: 0; color: var(--muted); }
+
+/* ---------- Отзывы ---------- */
+.reviews { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+.review {
+  margin: 0;
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--green);
+}
+.review p { margin: 0 0 12px; color: var(--text); }
+.review footer { font-weight: 800; color: var(--lime); }
+
+/* ---------- Подвал ---------- */
+.footer { background: #030904; color: var(--muted); padding: 38px 22px 24px; margin-top: 30px; border-top: 1px solid var(--line); }
+.footer__cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 22px; max-width: 1200px; margin: 0 auto; }
+.footer b { color: var(--lime); font-size: 20px; }
+.footer p { margin: 4px 0; }
+.footer__note { text-align: center; opacity: .6; margin: 26px auto 0; max-width: 1200px; }
+
+/* ---------- Доставка / самовывоз ---------- */
+.ship { display: grid; gap: 8px; margin: 14px 0 6px; }
+.ship__btn {
+  text-align: left;
+  border: 2px solid var(--line);
+  background: var(--surface-2);
+  border-radius: 14px;
+  padding: 11px 13px;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  color: var(--text);
+}
+.ship__btn.is-active { border-color: var(--green); background: rgba(47, 211, 95, .14); color: var(--lime); }
+.ship__note { color: var(--muted); font-weight: 600; }
+
+/* ---------- Команда ---------- */
+.team { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; }
+.person {
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+  transition: transform .18s ease, border-color .18s ease;
+}
+.person:hover { transform: translateY(-4px); border-color: var(--green); }
+.person__ava {
+  display: grid;
+  place-items: center;
+  width: 62px; height: 62px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--green), var(--green-dim));
+  font-size: 30px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .45);
+}
+.person__name { margin: 0 0 4px; font-size: 21px; color: #fff; }
+.person__role {
+  margin: 0 0 10px;
+  color: var(--lime);
+  font-weight: 800;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+.person__note { margin: 0; color: var(--muted); font-size: 15px; }
+.person--vacancy { border-style: dashed; opacity: .9; }
+.person--vacancy .person__ava { background: radial-gradient(circle at 35% 30%, #6a7a70, #33463a); }
+
+/* ---------- Документы и советы ---------- */
+.docs { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+.doc {
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  position: relative;
+}
+.doc b { display: block; color: #fff; margin: 12px 0 6px; }
+.doc p { margin: 0; color: var(--muted); }
+.doc__stamp {
+  display: inline-block;
+  border: 3px solid var(--green);
+  color: var(--lime);
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  transform: rotate(-4deg);
+}
+.doc__stamp--pig { border-color: var(--pink); color: var(--pink); transform: rotate(3deg); }
+.doc__stamp--baba { border-color: var(--lime); color: var(--lime); transform: rotate(-2deg); }
+body.light .doc { background: #fff; border-color: #bfe4cc; }
+body.light .doc b { color: #0d2b19; }
+body.light .doc p { color: #3d6b52; }
+
+.tip { margin-top: 20px; display: grid; gap: 12px; justify-items: start; }
+.tip__text {
+  margin: 0;
+  background: #000;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-weight: 700;
+  max-width: 60ch;
+}
+body.light .tip__text { background: #f2fff7; border-color: #bfe4cc; color: #0d2b19; }
+
+/* ---------- Отзывы бабушек ---------- */
+.babas { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; }
+.baba {
+  margin: 0;
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--pink);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.baba p { margin: 0 0 10px; color: var(--text); }
+.baba footer { color: var(--pink); font-weight: 800; }
+body.light .baba { background: #fff; border-color: #bfe4cc; }
+body.light .baba p { color: #0d2b19; }
+
+/* ---------- Халяль-сертификат ---------- */
+.cert {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: linear-gradient(90deg, rgba(47, 211, 95, .16), rgba(47, 211, 95, .04));
+  border: 1px solid var(--green);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+.cert__badge {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  min-width: 104px;
+  padding: 12px 10px;
+  border-radius: 14px;
+  background: var(--green);
+  color: #06210f;
+  font-weight: 900;
+  letter-spacing: 1px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .35);
+}
+.cert b { color: #fff; }
+.cert p { margin: 4px 0 0; color: var(--muted); }
+body.light .cert { background: #ffffff; border-color: #12803c; }
+body.light .cert b { color: #0d2b19; }
+body.light .cert p { color: #3d6b52; }
+
+/* ---------- Панель каталога: поиск, сортировка, фильтры ---------- */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 22px;
+}
+.search, .select, .input {
+  background: var(--surface-2);
+  border: 2px solid var(--line);
+  color: var(--text);
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 15px;
+  font-family: inherit;
+}
+.search { flex: 1 1 240px; min-width: 0; }
+.search:focus, .select:focus, .input:focus { outline: none; border-color: var(--green); }
+.select { cursor: pointer; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  border: 2px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+.chip:hover { color: var(--text); border-color: var(--green); }
+.chip.is-active { background: var(--green); border-color: var(--green); color: #06210f; }
+.empty { color: var(--muted); text-align: center; padding: 30px 0; }
+.empty[hidden] { display: none !important; }
+
+/* ---------- Формы ---------- */
+.form { display: grid; gap: 12px; max-width: 520px; margin-top: 10px; }
+.form__title { margin: 26px 0 0; font-size: 20px; color: #fff; }
+.form__note { margin: 0; color: var(--lime); font-weight: 700; min-height: 18px; }
+.input { width: 100%; resize: vertical; }
+.form .btn--full { margin-top: 4px; }
+
+/* ---------- Поделиться ---------- */
+.share { display: flex; flex-wrap: wrap; gap: 10px; }
+.share .btn { padding: 10px 16px; font-size: 15px; }
+
+/* ---------- Правая часть строки корзины ---------- */
+.cart__right { display: grid; gap: 2px; justify-items: end; }
+.link-del {
+  background: none;
+  border: 0;
+  color: var(--muted);
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.link-del:hover { color: var(--red); }
+
+/* ---------- Переключатель темы ---------- */
+.theme-toggle {
+  background: transparent;
+  border: 2px solid var(--green);
+  color: var(--lime);
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.theme-toggle:hover { background: rgba(47, 211, 95, .15); }
+
+/* ---------- Калькулятор ---------- */
+.calc {
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px;
+  display: grid;
+  gap: 18px;
+}
+.calc__row { display: grid; gap: 10px; font-weight: 700; }
+.calc__row b { color: var(--lime); }
+.range { width: 100%; accent-color: var(--green); }
+.calc__out { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.calc__out div {
+  background: #000;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+  text-align: center;
+}
+.calc__out b { display: block; font-size: 26px; color: var(--lime); }
+.calc__out span { color: var(--muted); font-size: 13px; }
+.calc__note { margin: 0; color: var(--muted); font-weight: 700; }
+.calc__note.is-warn { color: var(--red); }
+
+/* ---------- Розыгрыш ---------- */
+.lottery {
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px;
+  display: grid;
+  gap: 14px;
+  max-width: 560px;
+}
+.lottery__result { margin: 0; font-weight: 700; color: var(--text); }
+.lottery__log { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; color: var(--muted); font-size: 14px; }
+.lottery__log li { border-left: 3px solid var(--green); padding-left: 10px; }
+
+.season {
+  margin-top: 18px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  background: #000;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px 20px;
+}
+.season b { font-size: 30px; color: var(--lime); }
+.season span { color: var(--muted); }
+
+/* ---------- Промокод ---------- */
+.coupon { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin: 14px 0 4px; }
+.coupon__note { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 13px; min-height: 18px; }
+.coupon__note.is-ok { color: var(--lime); font-weight: 700; }
+.coupon__note.is-bad { color: var(--red); }
+
+/* ---------- Светлая тема ---------- */
+body.light {
+  background:
+    radial-gradient(1000px 420px at 50% -10%, rgba(47, 211, 95, .25), transparent 70%),
+    linear-gradient(180deg, #e9fff0 0%, #d6f6e0 55%, #c6efd4 100%);
+  color: #0d2b19;
+}
+body.light .header { background: rgba(255, 255, 255, .95); border-bottom-color: #bfe4cc; }
+body.light .logo__text { background: linear-gradient(90deg, #0d2b19, #2f8f4e); -webkit-background-clip: text; background-clip: text; }
+body.light .nav a { color: #2f6b46; }
+body.light .nav a:hover { color: #12803c; }
+body.light .section__title, body.light .step h3 { color: #0d2b19; text-shadow: none; }
+body.light .section__sub, body.light .step p, body.light .calc__note, body.light .lottery__result { color: #2f5c42; }
+body.light .hero__title { background: linear-gradient(180deg, #0d2b19, #2f8f4e); -webkit-background-clip: text; background-clip: text; filter: none; }
+body.light .hero__desc { color: #2f5c42; }
+body.light .hero__joke, body.light .calc, body.light .lottery, body.light .card, body.light .step, body.light .person, body.light .review {
+  background: #ffffff;
+  border-color: #bfe4cc;
+  box-shadow: 0 8px 0 rgba(0, 0, 0, .08);
+}
+body.light .calc__out div, body.light .season { background: #f2fff7; border-color: #bfe4cc; }
+body.light .card__name, body.light .step h3, body.light .person__name, body.light .review p, body.light .calc__out b { color: #0d2b19; }
+body.light .card__desc, body.light .person__note { color: #3d6b52; }
+body.light .card__price, body.light .sold b, body.light .calc__out b, body.light .season b, body.light .meme__cap { color: #12803c; }
+body.light .search, body.light .select, body.light .input { background: #fff; border-color: #bfe4cc; color: #0d2b19; }
+body.light .chip { color: #2f6b46; border-color: #bfe4cc; }
+body.light .chip.is-active { background: #12803c; color: #fff; border-color: #12803c; }
+body.light .cart__panel { background: #fff; border-color: #bfe4cc; color: #0d2b19; }
+body.light .cart__head h3 { color: #0d2b19; }
+body.light .cart__item { background: #f4fff8; border-color: #bfe4cc; }
+body.light .cart__item b { color: #0d2b19; }
+body.light .cart__item small, body.light .ship__note, body.light .form__note { color: #3d6b52; }
+body.light .cart__close { background: #eafaf0; color: #0d2b19; border-color: #bfe4cc; }
+body.light .btn--ghost { color: #0d2b19; box-shadow: inset 0 0 0 2px #12803c; }
+body.light .section--memes, body.light .section--cta { background: rgba(255, 255, 255, .55); border-color: #bfe4cc; }
+body.light .footer { background: #0d2b19; color: #bfe4cc; }
+body.light .meme { border-color: #bfe4cc; }
+body.light .tag { background: #e6fbee; color: #12803c; border-color: #bfe4cc; }
+
+/* ---------- Вес в корзине и чек ---------- */
+.cart__total { align-items: center; }
+.cart__weight { color: var(--muted); font-size: 15px; font-weight: 700; }
+.receipt {
+  margin: 14px 0 6px;
+  border: 2px dashed var(--green);
+  border-radius: 16px;
+  padding: 14px;
+  background: #000;
+}
+.receipt[hidden] { display: none !important; }
+.receipt__title { margin: 0 0 8px; font-size: 16px; color: var(--lime); letter-spacing: 1px; }
+.receipt__body {
+  margin: 0 0 10px;
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+body.light .receipt { background: #f2fff7; border-color: #12803c; }
+
+/* ---------- Викторина ---------- */
+.quiz {
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px;
+  display: grid;
+  gap: 14px;
+  max-width: 640px;
+}
+.quiz__q { margin: 0; font-size: 19px; font-weight: 800; color: #fff; }
+.quiz__options { display: grid; gap: 8px; }
+.quiz__btn {
+  text-align: left;
+  border: 2px solid var(--line);
+  background: var(--surface-2);
+  color: var(--text);
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.quiz__btn:hover:not(:disabled) { border-color: var(--green); }
+.quiz__btn:disabled { cursor: default; opacity: .75; }
+.quiz__btn.is-right { border-color: var(--green); background: rgba(47, 211, 95, .2); }
+.quiz__btn.is-wrong { border-color: var(--red); background: rgba(255, 77, 90, .16); }
+.quiz__score { margin: 0; font-weight: 700; color: var(--lime); min-height: 20px; }
+body.light .quiz { background: #fff; border-color: #bfe4cc; }
+body.light .quiz__q { color: #0d2b19; }
+body.light .quiz__btn { background: #f4fff8; border-color: #bfe4cc; color: #0d2b19; }
+
+/* ---------- Голосование ---------- */
+.votes { display: grid; gap: 10px; margin-bottom: 18px; }
+.vote {
+  display: grid;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px 16px;
+  background: var(--surface);
+}
+.vote__row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.vote__name { font-weight: 800; color: #fff; }
+.vote__pct { color: var(--lime); font-weight: 900; }
+.vote__bar { height: 10px; background: #000; border-radius: 999px; overflow: hidden; }
+.vote__fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--lime)); width: 0; transition: width .4s ease; }
+.vote__btn {
+  border: 2px solid var(--green);
+  background: transparent;
+  color: var(--lime);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.vote__btn:hover { background: rgba(47, 211, 95, .15); }
+.vote__btn:disabled { opacity: .4; cursor: default; }
+body.light .vote { background: #fff; border-color: #bfe4cc; }
+body.light .vote__name { color: #0d2b19; }
+body.light .vote__bar { background: #eafaf0; }
+
+/* ---------- Скрытый квест ---------- */
+.melon--clickable { cursor: pointer; transition: filter .2s ease; }
+.melon--clickable:hover { filter: brightness(1.12) drop-shadow(0 0 30px rgba(47, 211, 95, .6)); }
+.melon--clickable:active { transform: scale(.97) rotate(-3deg); }
+
+.quest {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 45;
+  width: min(330px, 92vw);
+  background: linear-gradient(180deg, #123a1e, #06180d);
+  border: 2px solid var(--green);
+  border-radius: 20px;
+  padding: 16px 18px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .65);
+}
+.quest[hidden] { display: none !important; }
+.quest__head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.quest__head b { color: var(--lime); font-size: 17px; }
+.quest__close {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 9px;
+  width: 28px; height: 28px;
+  cursor: pointer;
+}
+.quest__intro { margin: 10px 0; color: var(--muted); font-size: 14px; }
+.quest__steps { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 7px; }
+.quest__steps li {
+  display: flex;
+  gap: 9px;
+  font-size: 14.5px;
+  color: var(--text);
+  align-items: flex-start;
+}
+.quest__steps li::before { content: "⬜"; }
+.quest__steps li.is-done { color: var(--muted); text-decoration: line-through; }
+.quest__steps li.is-done::before { content: "✅"; }
+.quest__steps li.is-now { color: var(--lime); font-weight: 700; }
+.quest__foot { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.quest__foot .btn { padding: 8px 14px; font-size: 14px; }
+.quest__progress { color: var(--muted); font-size: 13px; }
+.quest__reward {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(182, 240, 106, .16);
+  color: var(--lime);
+  font-weight: 700;
+  font-size: 14px;
+}
+.quest__reward[hidden] { display: none !important; }
+#babaZina { cursor: pointer; transition: border-color .2s ease, transform .2s ease; }
+#babaZina:hover { border-color: var(--lime); transform: translateY(-2px); }
+
+/* ---------- Общий счётчик и покупатели ---------- */
+.buyers { display: grid; gap: 8px; max-width: 520px; }
+.buyer {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 11px 14px;
+}
+.buyer--top { border-color: var(--lime); background: rgba(182, 240, 106, .12); }
+.buyer__place { color: var(--muted); font-weight: 800; }
+.buyer__name { color: #fff; font-weight: 700; overflow-wrap: anywhere; }
+.buyer__count { color: var(--lime); font-weight: 900; white-space: nowrap; }
+.buyers__empty { color: var(--muted); margin: 0; }
+.buyers__sync { color: var(--lime); font-weight: 700; font-size: 14px; margin: 14px 0 0; }
+.buyers__sync.is-off { color: #ffc46b; }
+body.light .buyer { background: #fff; border-color: #bfe4cc; }
+body.light .buyer--top { background: #f0ffe0; }
+body.light .buyer__name { color: #0d2b19; }
+body.light .buyers__sync.is-off { color: #b06a00; }
+
+/* ---------- Форма заявки ---------- */
+.jobform {
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px;
+  display: grid;
+  gap: 14px;
+  max-width: 720px;
+}
+.jobform__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.jobrow { display: grid; gap: 6px; }
+.jobrow > span { font-weight: 700; font-size: 14.5px; color: var(--text); }
+.jobrow i { color: var(--red); font-style: normal; }
+.check { display: flex; gap: 10px; align-items: flex-start; font-weight: 600; cursor: pointer; }
+.check input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--green); }
+.jobform__note { margin: 0; font-weight: 700; color: var(--lime); min-height: 20px; }
+.jobform__note.is-bad { color: var(--red); }
+.jobform__cooldown {
+  margin: 0;
+  background: #000;
+  border: 1px solid var(--green);
+  border-radius: 14px;
+  padding: 12px 16px;
+  color: var(--text);
+  font-weight: 700;
+}
+.jobform__cooldown[hidden] { display: none !important; }
+.honeypot { position: absolute; left: -9999px; opacity: 0; height: 0; overflow: hidden; }
+body.light .jobform { background: #fff; border-color: #bfe4cc; }
+body.light .jobrow > span { color: #0d2b19; }
+body.light .jobform__cooldown { background: #f2fff7; border-color: #12803c; color: #0d2b19; }
+
+/* ---------- Корзина ---------- */
+.cart { position: fixed; inset: 0; z-index: 50; display: none; place-items: center; }
+.cart.is-open { display: grid !important; }
+.cart[hidden] { display: none !important; }
+.cart__overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, .72); }
+.cart__panel {
+  position: relative;
+  width: min(430px, 92vw);
+  max-height: 86vh;
+  overflow: auto;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .6);
+  z-index: 1;
+}
+.cart__head { display: flex; justify-content: space-between; align-items: center; }
+.cart__head h3 { margin: 0; color: #fff; }
+.cart__close {
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--line);
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  font-size: 17px;
+  cursor: pointer;
+}
+.cart__close:hover { background: var(--red); color: #fff; border-color: var(--red); }
+.cart__items { margin: 16px 0; display: grid; gap: 10px; }
+.cart__item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 10px;
+  align-items: center;
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+}
+.cart__item b { display: block; color: #fff; }
+.cart__item small { color: var(--muted); }
+.cart__qty { display: flex; align-items: center; gap: 8px; }
+.cart__qty button {
+  width: 30px; height: 30px;
+  border-radius: 9px;
+  border: 0;
+  background: var(--green-dim);
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+}
+.cart__qty button:hover { background: var(--green); }
+.cart__item .price { font-weight: 900; color: var(--lime); }
+.cart__empty { text-align: center; color: var(--muted); padding: 18px 0; }
+.cart__total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+  border-top: 2px dashed var(--line);
+  padding-top: 12px;
+  color: #fff;
+}
+
+/* ---------- Уведомление ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  background: var(--surface-2);
+  color: #fff;
+  padding: 14px 20px;
+  border-radius: 999px;
+  font-weight: 700;
+  z-index: 70;
+  border: 1px solid var(--green);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .6);
+  max-width: 92vw;
+  text-align: center;
+}
+.toast[hidden] { display: none !important; }
+
+/* ---------- Телефон ---------- */
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; text-align: center; padding-top: 34px; }
+  .hero__actions, .hero__joke, .sold { justify-content: center; margin-left: auto; margin-right: auto; }
+  .nav { width: 100%; margin-left: 0; justify-content: center; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="marquee">
+  <div class="marquee__row">
+    <span>PEREPRODAZHNIKI 🍉 ОПТОМ И В РОЗНИЦУ 🍉 ДОСТАВКА 2 ЧАСА 🍉 ХАЛЯЛЬНЫЕ АРБУЗЫ (КРОМЕ СВИНОГО) 🍉</span>
+    <span>PEREPRODAZHNIKI 🍉 ОПТОМ И В РОЗНИЦУ 🍉 ДОСТАВКА 2 ЧАСА 🍉 ХАЛЯЛЬНЫЕ АРБУЗЫ (КРОМЕ СВИНОГО) 🍉</span>
+  </div>
+</div>
+
+<header class="header">
+  <a class="logo" href="#top">
+    <span class="logo__melon">🍉</span>
+    <span class="logo__text">Pereprodazhniki</span>
+  </a>
+  <nav class="nav">
+    <a href="#catalog">Каталог</a>
+    <a href="#memes">Мемы</a>
+    <a href="#how">Доставка</a>
+    <a href="#team">Команда</a>
+    <a href="#reviews">Отзывы</a>
+  </nav>
+  <button class="theme-toggle" id="themeToggle" type="button" title="Сменить тему">🌙</button>
+  <span class="live-sold" title="Столько арбузов продано на сайте">🍉 продано: <b id="soldTop">0</b></span>
+  <button class="cart-btn" id="cartOpen" type="button" onclick="openCart()">
+    Корзина <span class="cart-btn__count" id="cartCount">0</span>
+  </button>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="hero__text">
+      <p class="hero__kicker">Pereprodazhniki — сезон 2026</p>
+      <h1 class="hero__title">ПЕРЕПРОДАЁМ<br>АРБУЗЫ<br>ЧЕСТНО<br>И С МЕМАМИ</h1>
+      <p class="hero__desc">
+        Мы скупаем арбузы у бабушек и перепродаём их вам.
+        Тот же арбуз, наценка на наш грех и максимум шуток в описании.
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--big" href="#catalog">Выбрать арбуз</a>
+        <button class="btn btn--ghost" id="jokeBtn" type="button">Сказать шутку</button>
+      </div>
+      <p class="hero__joke" id="jokeText">Нажми «Сказать шутку»</p>
+      <div class="sold" id="soldBox">
+        <span class="sold__dot" aria-hidden="true"></span>
+        Продано арбузов: <b id="soldCount">0</b>
+      </div>
+    </div>
+
+    <div class="hero__melon" aria-hidden="true">
+      <div class="melon melon--clickable" id="bigMelon" title="Нажми и посмотри, что будет">
+        <div class="melon__shine"></div>
+      </div>
+      <div class="hero__badge">100%<br>перепродажа</div>
+      <div class="hero__badge hero__badge--2">без<br>наценки</div>
+    </div>
+
+    <aside class="quest" id="questPanel" hidden>
+      <div class="quest__head">
+        <b>🕵️ Квест: пропавший арбуз</b>
+        <button class="quest__close" id="questClose" type="button" aria-label="Закрыть">✕</button>
+      </div>
+      <p class="quest__intro" id="questIntro">Кто-то спрятал арбуз. Найдём.</p>
+      <ul class="quest__steps" id="questSteps"></ul>
+      <div class="quest__foot">
+        <button class="btn btn--ghost" id="questHint" type="button">Подсказка</button>
+        <span class="quest__progress" id="questProgress"></span>
+      </div>
+      <p class="quest__reward" id="questReward" hidden></p>
+    </aside>
+  </section>
+
+  <section class="section" id="catalog">
+    <h2 class="section__title">Каталог</h2>
+    <p class="section__sub">Цены указаны за штуку. Доставка бесплатная, курьер приходит с весами и чувством вины.</p>
+
+    <div class="cert">
+      <span class="cert__badge">ХАЛЯЛЬ</span>
+      <div>
+        <b>Халяль — все арбузы, кроме свиного.</b>
+        <p>Все сорта готовятся по рецепту халяль. Свиной арбуз честно помечен как «не халяль» — мы не врём ради продаж.</p>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <input class="search" id="search" type="search" placeholder="Поиск: мед, ночной, свиной…">
+      <select class="select" id="sort">
+        <option value="default">Сначала популярные</option>
+        <option value="asc">Сначала дешёвые</option>
+        <option value="desc">Сначала дорогие</option>
+        <option value="name">По названию</option>
+      </select>
+      <div class="chips" id="chips"></div>
+    </div>
+
+    <div class="grid" id="catalogGrid"></div>
+    <p class="empty" id="catalogEmpty" hidden>Ничего не нашлось. Попробуй слово «арбуз».</p>
+  </section>
+
+  <section class="section" id="guarantees">
+    <h2 class="section__title">Гарантии</h2>
+    <p class="section__sub">Пункт про возврат арбуза — не шутка. Остальное — слегка шутка.</p>
+    <div class="steps">
+      <div class="step">
+        <span class="step__num">%</span>
+        <h3>Вернём деньги</h3>
+        <p>Арбуз не сок — возвращаем оплату. Сам арбуз забираем себе, мы не звери.</p>
+      </div>
+      <div class="step">
+        <span class="step__num">24</span>
+        <h3>Часа на жалобу</h3>
+        <p>Сообщи в день доставки. Косточки в качестве доказательства не принимаем.</p>
+      </div>
+      <div class="step">
+        <span class="step__num">0</span>
+        <h3>Семок не гарантируем</h3>
+        <p>Семена — это косточки. Косточки — это семена. Всё логично.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="calc">
+    <h2 class="section__title">Калькулятор арбузной жизни</h2>
+    <p class="section__sub">Посчитай, сколько арбузов ты съешь и во что это обойдётся.</p>
+
+    <div class="calc">
+      <label class="calc__row">
+        <span>Арбузов в неделю: <b id="calcPerWeekOut">3</b></span>
+        <input class="range" id="calcPerWeek" type="range" min="1" max="50" value="3">
+      </label>
+
+      <label class="calc__row">
+        <span>Средний вес арбуза: <b id="calcWeightOut">6 кг</b></span>
+        <input class="range" id="calcWeight" type="range" min="2" max="20" value="6">
+      </label>
+
+      <div class="calc__out">
+        <div><b id="calcYearKg">0</b><span>кг в год</span></div>
+        <div><b id="calcYearMoney">0 ₽</b><span>в год</span></div>
+        <div><b id="calcLifetimes">0</b><span>арбузов за жизнь</span></div>
+      </div>
+
+      <p class="calc__note" id="calcNote">Нормальный аппетит. Ничего подозрительного.</p>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <h2 class="section__title">Проверь себя, арбузник</h2>
+    <p class="section__sub">5 вопросов. Отвечай честно, бабушка всё равно узнает.</p>
+    <div class="quiz" id="quizBox">
+      <p class="quiz__q" id="quizQ">Нажми «Начать», когда будешь готов.</p>
+      <div class="quiz__options" id="quizOptions"></div>
+      <p class="quiz__score" id="quizScore"></p>
+      <button class="btn btn--big" id="quizBtn" type="button">Начать</button>
+    </div>
+  </section>
+
+  <section class="section section--memes" id="memes">
+    <h2 class="section__title">Отдел перепродажи</h2>
+    <p class="section__sub">Наши сотрудники не высыпаются, но арбузы перепродают идеально.</p>
+    <div class="memes">
+      <figure class="meme">
+        <div class="meme__img"><span class="meme__big">Я КУПИЛ<br>АРБУЗ</span></div>
+        <figcaption class="meme__cap">ЭТО АРБУЗ</figcaption>
+      </figure>
+      <figure class="meme">
+        <div class="meme__img meme__img--green"><span class="meme__big">БАБУШКА<br>ПРОСИТ</span></div>
+        <figcaption class="meme__cap">ОТСТАТЬ ОТ АРБУЗА</figcaption>
+      </figure>
+      <figure class="meme">
+        <div class="meme__img meme__img--seed"><span class="meme__big">СЕМЕЧКО<br>В АРБУЗЕ</span></div>
+        <figcaption class="meme__cap">ЭТО НЕ БАГ, ЭТО НАЦЕНКА</figcaption>
+      </figure>
+      <figure class="meme">
+        <div class="meme__img meme__img--red"><span class="meme__big">Я В АРБУЗЕ</span></div>
+        <figcaption class="meme__cap">Я НЕ ВЫХОЖУ, ТУТ ВЫГОДНЕЕ</figcaption>
+      </figure>
+      <figure class="meme">
+        <div class="meme__img meme__img--green"><span class="meme__big">БАБУШКА<br>ПРИНЕСЛА</span></div>
+        <figcaption class="meme__cap">СВОЙ АРБУЗ ИЗ САДА</figcaption>
+      </figure>
+<figure class="meme">
+        <div class="meme__img meme__img--seed"><span class="meme__big">СВИНОЙ<br>АРБУЗ</span></div>
+        <figcaption class="meme__cap">НЕ ХАЛЯЛЬ. И НЕ БУДЕТ.</figcaption>
+      </figure>
+      <figure class="meme">
+        <div class="meme__img"><span class="meme__big">БЕЗ<br>КОСТОЧЕК</span></div>
+        <figcaption class="meme__cap">99 990 ₽ ЗА ТО, ЧТО МЫ ВЫТАЩИЛИ</figcaption>
+      </figure>
+      <figure class="meme">
+        <div class="meme__img meme__img--red"><span class="meme__big">БАБУШКА<br>ЗАБИЛА</span></div>
+        <figcaption class="meme__cap">ПОКУПАЮТ ЛИ БАБУШКЕ СВИНЬЮ</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="docs">
+    <h2 class="section__title">Документы и свидетельства</h2>
+    <p class="section__sub">Показывать при проверках. Бабушка проверяет всё.</p>
+    <div class="docs">
+      <article class="doc">
+        <span class="doc__stamp">ХАЛЯЛЬ</span>
+        <b>Сертификат халяль</b>
+        <p>Для всех арбузов, кроме свиного. Выдаётся вместе с арбузом.</p>
+      </article>
+      <article class="doc">
+        <span class="doc__stamp doc__stamp--pig">НЕ ХАЛЯЛЬ</span>
+        <b>Пометка на свиной арбуз</b>
+        <p>Свиной арбуз не халяльный и продаётся с честной пометкой. Покупай, если знаешь, что делаешь.</p>
+      </article>
+      <article class="doc">
+        <span class="doc__stamp doc__stamp--baba">БАБУШКА</span>
+        <b>Гарантия от бабушки</b>
+        <p>Если арбуз не понравится — вернём деньги и ещё один арбуз, чтобы понравилось.</p>
+      </article>
+    </div>
+
+    <div class="tip">
+      <button class="btn btn--big" id="tipBtn" type="button">Совет от бабушки</button>
+      <p class="tip__text" id="tipText">Бабушка молчит. Нажми кнопку, если терпишь.</p>
+    </div>
+  </section>
+
+  <section class="section" id="babas">
+    <h2 class="section__title">Отзывы бабушек</h2>
+    <p class="section__sub">Присылают в комментариях, мы сохраняли в рамочку.</p>
+    <div class="babas">
+      <blockquote class="baba" id="babaZina" title="Можно нажать"><p>«Свой арбуз вкуснее вашего. Но я всё равно куплю, раз дочка просит.»</p><footer>— бабушка Зина, 84 года</footer></blockquote>
+      <blockquote class="baba"><p>«Я не понимаю эти ваши халяли. Но арбуз вкусный, даю.»</p><footer>— бабушка Валя, 61 год</footer></blockquote>
+      <blockquote class="baba"><p>«Свиней я не ем. И ваш халяль мне тут не поможет. Бабушка знает, что свинина — это свинина.»</p><footer>— бабушка Люда, 73 года</footer></blockquote>
+    </div>
+  </section>
+
+  <section class="section" id="how">
+    <h2 class="section__title">Как купить</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="step__num">1</span>
+        <h3>Выбираешь</h3>
+        <p>Листай каталог, жми «В корзину». Можно хоть двадцать арбузов.</p>
+      </div>
+      <div class="step">
+        <span class="step__num">2</span>
+        <h3>Перепродаём</h3>
+        <p>Ищем бабушку, торгуемся, заворачиваем в плёнку и везём.</p>
+      </div>
+      <div class="step">
+        <span class="step__num">3</span>
+        <h3>Едешь арбуз</h3>
+        <p>Курьер привозит, ты взвешиваешь, платишь. Всё как обычно.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="team">
+    <h2 class="section__title">Команда Pereprodazhniki</h2>
+    <p class="section__sub">Все эти люди реально работают с арбузами. Почти все.</p>
+    <div class="team">
+      <article class="person">
+        <span class="person__ava">🗂️</span>
+        <h3 class="person__name">Карина</h3>
+        <p class="person__role">Секретарь</p>
+        <p class="person__note">Принимает звонки, пока не спит. Ищет арбуз по голосу.</p>
+      </article>
+      <article class="person">
+        <span class="person__ava">🛒</span>
+        <h3 class="person__name">Юля</h3>
+        <p class="person__role">Продавец</p>
+        <p class="person__note">Торгуется с бабушками. Никогда не проигрывает. Почти.</p>
+      </article>
+      <article class="person">
+        <span class="person__ava">🏛️</span>
+        <h3 class="person__name">Тимур Аминев</h3>
+        <p class="person__role">Депутат · Инвестор</p>
+        <p class="person__note">Лоббирует запрет арбузов свыше 9 кг и в тот же день вкладывает в них деньги.</p>
+      </article>
+      <article class="person">
+        <span class="person__ava">📞</span>
+        <h3 class="person__name">Камиль</h3>
+        <p class="person__role">Трезвонщик · Создатель</p>
+        <p class="person__note">Звонит всем подряд и лично собрал этот сайт. Поэтому счётчик иногда считает неправильно.</p>
+      </article>
+      <article class="person">
+        <span class="person__ava">🤝</span>
+        <h3 class="person__name">Тимур Беленький</h3>
+        <p class="person__role">Он решала поставок</p>
+        <p class="person__note">Если арбузы не приехали — значит, он ещё договаривается. Договаривается со всеми, даже с теми, кто уже всё перекупил.</p>
+      </article>
+      <article class="person">
+        <span class="person__ava">📋</span>
+        <h3 class="person__name">Сафия</h3>
+        <p class="person__role">Помощник Беленького</p>
+        <p class="person__note">Ведёт поставки арбузов: помнит, кто должен и кому уже привезли.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="reviews">
+    <h2 class="section__title">Отзывы</h2>
+    <div class="reviews" id="reviewList"></div>
+
+    <h3 class="form__title">Оставь свой отзыв</h3>
+    <form class="form" id="reviewForm" novalidate>
+      <input class="input" id="reviewName" type="text" maxlength="24" placeholder="Как тебя зовут" required>
+      <textarea class="input" id="reviewText" rows="3" maxlength="300" placeholder="Про арбуз (без мата, пожалуйста)" required></textarea>
+      <button class="btn btn--big" type="submit">Отправить отзыв</button>
+      <p class="form__note" id="reviewNote"></p>
+    </form>
+  </section>
+
+  <section class="section" id="lottery">
+    <h2 class="section__title">Испытай удачу</h2>
+    <p class="section__sub">Розыгрыш арбузов среди своих. Шанс честный: примерно один на три.</p>
+    <div class="lottery">
+      <button class="btn btn--big" id="lotteryBtn" type="button">Крутить барабан</button>
+      <p class="lottery__result" id="lotteryResult">Ещё не крутил. Кнопка ждёт.</p>
+      <ul class="lottery__log" id="lotteryLog"></ul>
+    </div>
+
+    <div class="season">
+      <b id="seasonDays">—</b>
+      <span>дней до конца арбузного сезона</span>
+    </div>
+  </section>
+
+  <section class="section" id="vote">
+    <h2 class="section__title">Твой любимый сорт</h2>
+    <p class="section__sub">Голосуй, все сорта смотрят. Кто победил — привезём первым.</p>
+    <div class="votes" id="voteList"></div>
+    <button class="btn btn--ghost" id="nameGen" type="button">Сгенерировать имя для арбуза</button>
+    <p class="tip__text" id="nameOut">Нажми кнопку — бабушка придумает имя.</p>
+  </section>
+
+  <section class="section" id="buyers">
+    <h2 class="section__title">Кто уже купил</h2>
+    <p class="section__sub">Твой личный список покупок: считается на этом устройстве.</p>
+    <div class="buyers" id="buyersList"><p class="buyers__empty">Пока никто. Будь первым!</p></div>
+    <p class="buyers__sync" id="buyersSync">Синхронизация…</p>
+  </section>
+
+  <section class="section" id="job">
+    <h2 class="section__title">Хочешь работать у нас?</h2>
+    <p class="section__sub">Заявки приходят прямо на компьютер владельца сайта. Без посредников.</p>
+
+    <form class="jobform" name="zayavka" method="POST" id="jobForm">
+      <p class="honeypot">
+        <label>Не заполняй это поле: <input name="bot-field"></label>
+      </p>
+
+      <div class="jobform__grid">
+        <label class="jobrow">
+          <span>Как тебя зовут <i>*</i></span>
+          <input class="input" type="text" name="name" maxlength="40" required placeholder="Например: Булат">
+        </label>
+
+        <label class="jobrow">
+          <span>Сколько тебе лет <i>*</i></span>
+          <input class="input" type="text" name="age" maxlength="3" required placeholder="12">
+        </label>
+
+        <label class="jobrow">
+          <span>Кем хочешь работать <i>*</i></span>
+          <select class="input" name="position" required>
+            <option value="">— выбери —</option>
+            <option>Продавец арбузов</option>
+            <option>Трезвонщик</option>
+            <option>Секретарь</option>
+            <option>Курьер</option>
+            <option>Наставник по бабушкам</option>
+            <option>Специалист по свиным арбузам</option>
+            <option>Создатель сайта</option>
+          </select>
+        </label>
+
+        <label class="jobrow">
+          <span>Телефон или почта <i>*</i></span>
+          <input class="input" type="text" name="contact" maxlength="60" required placeholder="Телефон или @почта">
+        </label>
+      </div>
+
+      <label class="jobrow">
+        <span>Опыт работы <i>*</i></span>
+        <textarea class="input" name="experience" rows="2" maxlength="300" required placeholder="Продавал арбузы на базаре 3 года"></textarea>
+      </label>
+
+      <label class="jobrow">
+        <span>Почему мы должны тебя взять? <i>*</i></span>
+        <textarea class="input" name="why" rows="3" maxlength="500" required placeholder="Потому что я умею торговаться с бабушками"></textarea>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" name="agree" required>
+        <span>Согласен, что мою заявку увидят Камиль, Юля и бабушка Зина</span>
+      </label>
+
+      <button class="btn btn--big" type="submit">Отправить заявку</button>
+      <p class="jobform__note" id="jobNote"></p>
+      <p class="jobform__cooldown" id="jobCooldown" hidden></p>
+    </form>
+  </section>
+
+  <section class="section section--cta">
+    <h2 class="section__title">Остался последний арбуз сезона</h2>
+    <p>Один. Реально один. Потом закрываемся до весны.</p>
+    <button class="btn btn--big" id="lastMelon" type="button">Забрать последний</button>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer__cols">
+    <div>
+      <b>Pereprodazhniki</b>
+      <p>Перепродажа арбузов с 2026 года</p>
+    </div>
+    <div>
+      <b>Контакты</b>
+      <p>pereprodazhniki@example.ru</p>
+      <p>Ежедневно с 9:00 до 22:00</p>
+    </div>
+    <div>
+      <b>Рассказать друзьям</b>
+      <div class="share">
+        <button class="btn btn--ghost" id="copyLink" type="button">Скопировать ссылку</button>
+        <a class="btn btn--ghost" id="shareTg" href="#" target="_blank" rel="noopener">Telegram</a>
+        <a class="btn btn--ghost" id="shareVk" href="#" target="_blank" rel="noopener">ВКонтакте</a>
+      </div>
+    </div>
+  </div>
+  <p class="footer__note">Сайт собрал Камиль. Арбузы привёз Тимур Беленький. Халяль-гарантию подписал Тимур Аминев.</p>
+  <p class="footer__note">Сайт является шуткой. Арбузы настоящие.</p>
+</footer>
+
+<!-- Корзина -->
+<div class="cart" id="cart" hidden>
+  <div class="cart__panel" role="dialog" aria-label="Корзина">
+    <div class="cart__head">
+      <h3>Корзина</h3>
+      <button class="cart__close" id="cartClose" type="button" aria-label="Закрыть" onclick="closeCart()">✕</button>
+    </div>
+
+    <div class="cart__items" id="cartItems"></div>
+
+    <div class="ship">
+      <button class="ship__btn is-active" type="button" data-ship="delivery">Доставка курьером</button>
+      <button class="ship__btn" type="button" data-ship="pickup">Самовывоз со склада</button>
+      <small class="ship__note" id="shipNote">Доставка 200 ₽ — курьер приедет за арбузом лично</small>
+    </div>
+
+    <div class="cart__total">
+      <span>Итого: <b id="cartTotal">0 ₽</b></span>
+      <span class="cart__weight" id="cartWeight">0 кг</span>
+    </div>
+
+    <div class="receipt" id="receipt" hidden>
+      <h4 class="receipt__title">Чек</h4>
+      <pre class="receipt__body" id="receiptBody"></pre>
+      <button class="btn btn--ghost btn--full" id="receiptCopy" type="button">Скопировать чек</button>
+    </div>
+
+    <div class="coupon">
+      <input class="input" id="couponInput" type="text" maxlength="20" placeholder="Промокод: БАБУШКА, КОСТОЧКИ…">
+      <button class="btn btn--ghost" id="couponApply" type="button">Применить</button>
+      <p class="coupon__note" id="couponNote">Промокод не найден — это не баг, это фича.</p>
+    </div>
+
+    <h4 class="form__title">Куда везти</h4>
+    <form class="form" id="orderForm" novalidate>
+      <input class="input" id="orderName" type="text" maxlength="30" placeholder="Имя" required>
+      <input class="input" id="orderPhone" type="tel" maxlength="20" placeholder="Телефон (11 цифр)" required>
+      <input class="input" id="orderAddr" type="text" maxlength="80" placeholder="Адрес или «самовывоз»" required>
+      <p class="form__note" id="orderNote"></p>
+      <button class="btn btn--big btn--full" id="checkout" type="button">Оформить заказ</button>
+    </form>
+
+    <button class="btn btn--ghost btn--full" id="cartClear" type="button">Очистить корзину</button>
+    <button class="btn btn--ghost btn--full" type="button" onclick="closeCart()">Закрыть корзину</button>
+  </div>
+  <div class="cart__overlay" id="cartOverlay" onclick="closeCart()"></div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* Pereprodazhniki — вся логика: каталог, корзина, заказ, отзывы, шутки */
+
+var PRODUCTS = [
+  { id: "solnyi", name: "Солёный (нет)", icon: "🧂", price: 199, weight: "3 кг", tags: ["сок", "харизма"],
+    desc: "Обычный арбуз, но мы его перепродали. Вкус не изменился, отношение — да." },
+  { id: "medovyi", name: "Медовый перекуп", icon: "🍯", price: 349, weight: "5 кг", tags: ["сладкий", "хит"],
+    desc: "Купили у соседа за 200, вам отдаём за 349. Беременным не рекомендуем." },
+  { id: "kvadratnyi", name: "Квадратный", icon: "🟩", price: 499, weight: "7 кг", tags: ["необычный"],
+    desc: "Не помещается в холодильник. Мы предупреждали. Вы продолжали настаивать." },
+  { id: "nochnoy", name: "Ночной перекуп", icon: "🌙", price: 599, weight: "9 кг", tags: ["премиум", "ночь"],
+    desc: "Привозим ночью, пока вы спите. Утром арбуз уже в холодильнике." },
+  { id: "svinoy", name: "Свиной арбуз", icon: "🐷", price: 1499, weight: "13 кг", tags: ["не халяль", "мем", "премиум"],
+    desc: "Не халяль, и мы это честно написали. Пятачок сладкий, но сертификата нет." },
+  { id: "bezkostochek", name: "Арбуз без косточек", icon: "🫧", price: 99990, weight: "9 кг", tags: ["халяль", "премиум", "редкий"],
+    desc: "Косточек нет вообще. Мы вытащили их все сами и сложили в отдельный пакет — в подарок." }
+];
+
+var BASE_REVIEWS = [
+  { name: "Даша", tag: "12 покупок", text: "Впервые не пришлось выковыривать косточки из карманов. Рекомендую Pereprodazhniki." },
+  { name: "Булат", tag: "5 арбузов", text: "Взял пять штук. Жена пересчитала арбузы в коридоре и решила, что я переехал. Похоже, я переехал." },
+  { name: "Тимур", tag: "1 арбуз", text: "Купил один арбуз и сразу перепродал соседу за два. Прибыль ноль, опыт бесценный." },
+  { name: "Ваня", tag: "3 арбуза", text: "Заказал три, приехал один. Остальные два съел по дороге. Виноват сам, но арбуз был великолепен." }
+];
+
+var JOKES = [
+  "Арбуз — это груша, которая решила стать серьёзной.",
+  "Мы не перепродаём арбузы. Мы их перепродаём ЗАНОВО.",
+  "Сколько арбузов помещается в лифт? Ровно столько, сколько влезет.",
+  "Продавец арбузов зимой не скучает. Он ждёт.",
+  "Арбуз без косточек — это не дефект, а предоплата вашей удачи.",
+  "Если арбуз не пахнет летом — мы вернём деньги и арбуз.",
+  "Наш слоган: взяли дешевле, отдали веселее.",
+  "Каждый арбуз проходит контроль: взвешивание, вздыхание, одобрение.",
+  "Бабушка спросила, халяль ли свинина. Мы честно сказали: нет. Бабушка одобрила.",
+  "Свиной арбуз у нас один и он с пометкой «не халяль». Честность — тоже маркетинг.",
+  "Если косточек нет, значит их съели в пути. Мы не знаем кто.",
+  "Бабушка просила не перепродавать. Мы перепродали. Она не узнает."
+];
+
+var TIPS = [
+  "Арбуз сначала стукни. Если звук глухой — бабушка в восторге.",
+  "Не режь арбуз на солнце, а то он стесняется.",
+  "Соль на краю — и бабушка перестанет ворчать.",
+  "Халяльный арбуз держи в холодильнике. Свиной — вообще в сарае.",
+  "Если арбуз тяжёлый — значит, бабушка старалась.",
+  "Никогда не бери арбуз у того, кто называет свинью халяль.",
+  "Косточки — это не баг, это бабушкина проверка на твою честность.",
+  "Отрезай от себя, а не от соседа. Так делает бабушка."];
+
+var SHIP_FEE = 200;
+var STORE = { cart: "prz_cart", ship: "prz_ship", sold: "prz_sold", reviews: "prz_reviews", coupon: "prz_coupon", votes: "prz_votes", voted: "prz_voted", buyers: "prz_buyers" };
+
+var cart = read(STORE.cart, {});
+var ship = read(STORE.ship, "delivery");
+var reviews = read(STORE.reviews, []);
+var sold = read(STORE.sold, 0);
+var buyers = read(STORE.buyers, []);
+var activeTag = null;
+
+/* чистка: убираем из корзины товары, которых больше нет в каталоге */
+(function cleanCart() {
+  var changed = false;
+  var ids = Object.keys(cart);
+  for (var i = 0; i < ids.length; i++) {
+    if (!productById(ids[i]) || !(cart[ids[i]] > 0)) {
+      delete cart[ids[i]];
+      changed = true;
+    }
+  }
+  if (changed) write(STORE.cart, cart);
+})();
+
+/* чистка: нормализуем способ доставки */
+if (ship !== "delivery" && ship !== "pickup") ship = "delivery";
+
+/* чистка: отзывы должны быть массивом объектов */
+if (!Array.isArray(reviews)) reviews = [];
+if (typeof sold !== "number" || isNaN(sold) || sold < 0) sold = 0;
+if (!Array.isArray(buyers)) buyers = [];
+
+/* промокоды */
+var COUPONS = {
+  "БАБУШКА": { kind: "percent", value: 10, label: "скидка 10%" },
+  "КОСТОЧКИ": { kind: "shipping", value: 0, label: "доставка бесплатно" },
+  "ЛЕТО": { kind: "percent", value: 15, label: "скидка 15%" },
+  "ПЕРЕПРОДАЖА": { kind: "percent", value: 5, label: "скидка 5%" },
+  "БЕЛЕНЬКИЙ": { kind: "shipping", value: 0, label: "Беленький передаёт привет" },
+  "ЗИНА": { kind: "percent", value: 20, label: "бабушкина скидка 20%" }
+};
+var coupon = read(STORE.coupon, null);
+
+function read(key, fallback) {
+  try {
+    var raw = localStorage.getItem(key);
+    if (raw === null) return fallback;
+    return JSON.parse(raw);
+  } catch (e) { return fallback; }
+}
+
+function write(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {}
+}
+
+var toastTimer = null;
+function toast(text) {
+  var el = document.getElementById("toast");
+  if (!el) return;
+  el.textContent = text;
+  el.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { el.hidden = true; }, 3200);
+}
+
+function money(n) { return n.toLocaleString("ru-RU") + " ₽"; }
+
+function productById(id) {
+  for (var i = 0; i < PRODUCTS.length; i++) if (PRODUCTS[i].id === id) return PRODUCTS[i];
+  return null;
+}
+
+/* ---------- каталог ---------- */
+function currentList() {
+  var query = (document.getElementById("search").value || "").trim().toLowerCase();
+  var sort = document.getElementById("sort").value;
+
+  var list = PRODUCTS.filter(function (p) {
+    var hay = (p.name + " " + p.desc + " " + p.tags.join(" ")).toLowerCase();
+    var okText = !query || hay.indexOf(query) !== -1;
+    var okTag = !activeTag || p.tags.indexOf(activeTag) !== -1;
+    return okText && okTag;
+  });
+
+  if (sort === "asc") list.sort(function (a, b) { return a.price - b.price; });
+  if (sort === "desc") list.sort(function (a, b) { return b.price - a.price; });
+  if (sort === "name") list.sort(function (a, b) { return a.name.localeCompare(b.name, "ru"); });
+  return list;
+}
+
+function renderChips() {
+  var box = document.getElementById("chips");
+  var tags = [];
+  PRODUCTS.forEach(function (p) {
+    p.tags.forEach(function (t) { if (tags.indexOf(t) === -1) tags.push(t); });
+  });
+
+  box.innerHTML = "";
+
+  var all = document.createElement("button");
+  all.type = "button";
+  all.className = "chip" + (activeTag === null ? " is-active" : "");
+  all.textContent = "все";
+  all.addEventListener("click", function () { activeTag = null; renderCatalog(); });
+  box.appendChild(all);
+
+  tags.forEach(function (t) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip" + (activeTag === t ? " is-active" : "");
+    b.textContent = t;
+    b.addEventListener("click", function () { activeTag = t; renderCatalog(); });
+    box.appendChild(b);
+  });
+}
+
+function renderCatalog() {
+  renderChips();
+  var grid = document.getElementById("catalogGrid");
+  var empty = document.getElementById("catalogEmpty");
+  var list = currentList();
+
+  grid.innerHTML = "";
+
+  if (list.length === 0) { empty.hidden = false; return; }
+  empty.hidden = true;
+
+  list.forEach(function (p) {
+    var card = document.createElement("article");
+    card.className = "card";
+
+    var tagsHtml = "";
+    p.tags.forEach(function (t) {
+      var s = document.createElement("span");
+      s.className = "tag";
+      s.textContent = t;
+      tagsHtml += s.outerHTML;
+    });
+
+    card.innerHTML =
+      '<div class="card__icon"></div>' +
+      '<h3 class="card__name"></h3>' +
+      '<p class="card__desc"></p>' +
+      '<div class="card__meta"><span class="tag weight"></span>' + tagsHtml + '</div>' +
+      '<div class="card__foot"><span class="card__price"></span>' +
+      '<button class="btn btn--big" type="button">В корзину</button></div>' +
+      (p.tags.indexOf("хит") !== -1 ? '<span class="hit">ХИТ</span>' : "");
+
+    card.querySelector(".card__icon").textContent = p.icon;
+    card.querySelector(".card__name").textContent = p.name;
+    card.querySelector(".card__desc").textContent = p.desc;
+    card.querySelector(".card__meta .weight").textContent = p.weight;
+    card.querySelector(".card__price").textContent = money(p.price);
+
+    var btn = card.querySelector("button");
+    btn.addEventListener("click", function () { addToCart(p.id, btn); });
+
+    grid.appendChild(card);
+  });
+}
+
+/* ---------- чек ---------- */
+var lastReceipt = "";
+
+function cartWeight() {
+  var kg = 0;
+  for (var id in cart) {
+    var p = productById(id);
+    if (p) kg += parseInt(p.weight, 10) * cart[id];
+  }
+  return kg;
+}
+
+function buildReceipt(orderNo, count, total, addr, phone) {
+  var lines = [];
+  lines.push("PEREPRODAZHNIKI");
+  lines.push("Чек №" + orderNo);
+  lines.push("----------------");
+  var names = Object.keys(cart);
+  for (var i = 0; i < names.length; i++) {
+    var p = productById(names[i]);
+    if (p) lines.push(p.name + " x" + cart[names[i]] + " = " + money(p.price * cart[names[i]]));
+  }
+  lines.push("----------------");
+  lines.push("Вес: " + cartWeight() + " кг");
+  lines.push("Доставка: " + (ship === "pickup" ? "самовывоз" : money(SHIP_FEE)));
+  lines.push("ИТОГО: " + money(total));
+  lines.push("Арбузов: " + count);
+  lines.push("Получатель: " + addr);
+  lines.push("Телефон: +7" + phone);
+  lines.push("");
+  lines.push("Спасибо, что перепродали!");
+  return lines.join("\n");
+}
+
+function showReceipt(text) {
+  lastReceipt = text;
+  document.getElementById("receiptBody").textContent = text;
+  document.getElementById("receipt").hidden = false;
+}
+
+function copyText(text, okMsg) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function () { toast(okMsg); }, function () { fallback(); });
+  } else {
+    fallback();
+  }
+  function fallback() {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); toast(okMsg); }
+    catch (e) { toast("Скопируй вручную"); }
+    document.body.removeChild(ta);
+  }
+}
+
+/* ---------- викторина ---------- */
+var QUIZ = [
+  { q: "Сколько стоит арбуз без косточек?", a: ["99 990 ₽", "199 ₽", "749 ₽"], correct: 0 },
+  { q: "Кто у нас отвечает на звонки?", a: ["Камиль", "Карина", "Сафия"], correct: 1 },
+  { q: "Какой арбуз у нас НЕ халяльный?", a: ["Ночной", "Свиной", "Медовый"], correct: 1 },
+  { q: "Кто решает поставки арбузов?", a: ["Тимур Аминев", "Тимур Беленький", "Юля"], correct: 1 },
+  { q: "Сколько арбузов съедает бабушка за лето?", a: ["Один", "Все, что привезли", "Ноль"], correct: 1 }
+];
+var quizIndex = 0, quizScore = 0;
+
+function quizStart() {
+  quizIndex = 0;
+  quizScore = 0;
+  renderQuiz();
+}
+
+function renderQuiz() {
+  var qBox = document.getElementById("quizQ");
+  var optBox = document.getElementById("quizOptions");
+  var scoreBox = document.getElementById("quizScore");
+  var btn = document.getElementById("quizBtn");
+
+  optBox.innerHTML = "";
+
+  if (quizIndex >= QUIZ.length) {
+    var verdict = quizScore >= 4 ? "Бабушка бы тобой гордилась." : "Бабушка где-то плачет. В основном от смеха.";
+    qBox.textContent = "Готово: " + quizScore + " из " + QUIZ.length + ". " + verdict;
+    scoreBox.textContent = "";
+    btn.textContent = "Пройти ещё раз";
+    return;
+  }
+
+  var item = QUIZ[quizIndex];
+  qBox.textContent = (quizIndex + 1) + ". " + item.q;
+  btn.textContent = "Заново";
+  scoreBox.textContent = "Сейчас: " + quizScore + " из " + QUIZ.length;
+
+  item.a.forEach(function (text, i) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "quiz__btn";
+    b.textContent = text;
+    b.addEventListener("click", function () {
+      var btns = optBox.querySelectorAll("button");
+      for (var j = 0; j < btns.length; j++) btns[j].disabled = true;
+      if (i === item.correct) {
+        b.classList.add("is-right");
+        quizScore++;
+      } else {
+        b.classList.add("is-wrong");
+      }
+      scoreBox.textContent = "Сейчас: " + quizScore + " из " + QUIZ.length;
+      quizIndex++;
+      setTimeout(renderQuiz, 800);
+    });
+    optBox.appendChild(b);
+  });
+}
+
+/* ---------- голосование ---------- */
+var votes = read(STORE.votes, {});
+var voted = read(STORE.voted, false);
+
+function voteTotal() {
+  var n = 0;
+  for (var id in votes) n += votes[id];
+  return n;
+}
+
+function renderVotes() {
+  var box = document.getElementById("voteList");
+  box.innerHTML = "";
+  var total = voteTotal();
+
+  PRODUCTS.forEach(function (p) {
+    var count = votes[p.id] || 0;
+    var pct = total > 0 ? Math.round(count / total * 100) : 0;
+
+    var row = document.createElement("div");
+    row.className = "vote";
+
+    var top = document.createElement("div");
+    top.className = "vote__row";
+
+    var name = document.createElement("span");
+    name.className = "vote__name";
+    name.textContent = p.icon + " " + p.name;
+
+    var pctEl = document.createElement("span");
+    pctEl.className = "vote__pct";
+    pctEl.textContent = pct + "%";
+
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "vote__btn";
+    btn.textContent = voted ? "уже проголосовано" : "голосовать";
+    btn.disabled = voted;
+    btn.addEventListener("click", function () {
+      if (voted) return;
+      votes[p.id] = (votes[p.id] || 0) + 1;
+      voted = true;
+      write(STORE.votes, votes);
+      write(STORE.voted, voted);
+      renderVotes();
+      toast("Голос зачтён: " + p.name);
+    });
+
+    top.appendChild(name);
+    top.appendChild(pctEl);
+    top.appendChild(btn);
+
+    var bar = document.createElement("div");
+    bar.className = "vote__bar";
+
+    var fill = document.createElement("div");
+    fill.className = "vote__fill";
+    fill.style.width = pct + "%";
+
+    bar.appendChild(fill);
+    row.appendChild(top);
+    row.appendChild(bar);
+    box.appendChild(row);
+  });
+}
+
+/* ---------- генератор имени ---------- */
+var NAME_PARTS = {
+  adj: ["Медовый", "Ночной", "Боевой", "Халяльный", "Свиной", "Квадратный", "Солёный", "Безкосточный"],
+  who: ["Беленький", "Аминев", "Камиль", "Сафия", "Карина", "Юля", "бабушка", "дядя с огорода"],
+  extra: ["№1", "№2", "№7", "премиум", "оптом", "на зло соседу", "на вырост"]
+};
+
+function generateName() {
+  var a = NAME_PARTS.adj[Math.floor(Math.random() * NAME_PARTS.adj.length)];
+  var w = NAME_PARTS.who[Math.floor(Math.random() * NAME_PARTS.who.length)];
+  var e = NAME_PARTS.extra[Math.floor(Math.random() * NAME_PARTS.extra.length)];
+  document.getElementById("nameOut").textContent = "Арбуз «" + a + " " + w + " " + e + "»";
+}
+
+/* ---------- пасхалка ---------- */
+function initEasterEgg() {
+  var logo = document.querySelector(".logo__melon");
+  if (!logo) return;
+  var clicks = 0;
+  logo.addEventListener("click", function () {
+    clicks++;
+    if (clicks === 5) {
+      clicks = 0;
+      toast("ПАСХАЛКА: бабушка знает про все арбузы. И про свинью тоже.");
+    }
+  });
+}
+
+/* ---------- скрытый квест ---------- */
+var QUEST_KEY = "prz_quest";
+var QUEST_CODE = "ЗИНА";
+var SECRET_PRODUCT = {
+  id: "kamila",
+  name: "Арбуз Камиля",
+  icon: "🏆",
+  price: 0,
+  weight: "10 кг",
+  tags: ["секрет", "награда", "халяль"],
+  desc: "Добыт в секретном квесте. Прошёл халяль-проверку, бабушка одобрила."
+};
+
+var quest = read(QUEST_KEY, null) || { started: false, hinted: false, zina: false, ordered: false, done: false };
+
+function saveQuest() {
+  write(QUEST_KEY, quest);
+}
+
+function questSteps() {
+  return [
+    { id: "start", text: "Кликнуть по большому зелёному арбузу", done: !!quest.started },
+    { id: "zina", text: "Узнать секретный код у бабушки Зины", done: !!quest.zina },
+    { id: "order", text: "Применить код «" + QUEST_CODE + "» и оформить заказ", done: !!quest.ordered },
+    { id: "done", text: "Получить секретный арбуз Камиля", done: !!quest.done }
+  ];
+}
+
+function renderQuest() {
+  var panel = document.getElementById("questPanel");
+  var list = document.getElementById("questSteps");
+  var progress = document.getElementById("questProgress");
+  var reward = document.getElementById("questReward");
+  if (!panel || !list) return;
+
+  if (!quest.started) {
+    panel.hidden = true;
+    return;
+  }
+
+  panel.hidden = false;
+  list.innerHTML = "";
+
+  var steps = questSteps();
+  var doneCount = 0;
+  var nextIndex = -1;
+
+  steps.forEach(function (s, i) {
+    if (s.done) doneCount++;
+    else if (nextIndex === -1) nextIndex = i;
+    var li = document.createElement("li");
+    li.textContent = s.text;
+    if (s.done) li.classList.add("is-done");
+    else if (i === nextIndex) li.classList.add("is-now");
+    list.appendChild(li);
+  });
+
+  if (progress) progress.textContent = doneCount + " из " + steps.length;
+
+  if (reward) {
+    reward.hidden = !quest.done;
+    if (quest.done) reward.textContent = "Квест пройден! Промокод ПОБЕДА (−50%) доступен навсегда.";
+  }
+}
+
+function unlockSecretProduct() {
+  if (quest.done) return;
+  quest.done = true;
+  quest.ordered = true;
+  saveQuest();
+
+  var exists = false;
+  for (var i = 0; i < PRODUCTS.length; i++) {
+    if (PRODUCTS[i].id === SECRET_PRODUCT.id) exists = true;
+  }
+  if (!exists) {
+    PRODUCTS.push(SECRET_PRODUCT);
+    renderCatalog();
+    renderChips();
+  }
+  COUPONS["ПОБЕДА"] = { kind: "percent", value: 50, label: "награда за квест: скидка 50%" };
+
+  renderQuest();
+  toast("🏆 Квест пройден! Открыт арбуз Камиля и промокод ПОБЕДА");
+}
+
+function startQuest() {
+  if (!quest.started) {
+    quest.started = true;
+    saveQuest();
+  }
+  renderQuest();
+  toast("Квест начался: пропавший арбуз");
+}
+
+function questHint() {
+  if (!quest.zina) {
+    quest.hinted = true;
+    saveQuest();
+    toast("Подсказка: бабушка Зина повёрнута в углу бабушек. Её можно нажать.");
+    return;
+  }
+  toast("Код уже у тебя. Вставь его в корзине: поле «Промокод».");
+}
+
+function initQuest() {
+  var melon = document.getElementById("bigMelon");
+  if (melon) {
+    melon.addEventListener("click", function () {
+      startQuest();
+    });
+  }
+
+  var close = document.getElementById("questClose");
+  if (close) {
+    close.addEventListener("click", function () {
+      document.getElementById("questPanel").hidden = true;
+    });
+  }
+
+  var hint = document.getElementById("questHint");
+  if (hint) hint.addEventListener("click", questHint);
+
+  var zina = document.getElementById("babaZina");
+  if (zina) {
+    zina.addEventListener("click", function () {
+      if (!quest.started) return;
+      if (!quest.zina) {
+        quest.zina = true;
+        saveQuest();
+      }
+      renderQuest();
+      toast("Бабушка Зина: «Секретный код — " + QUEST_CODE + ". Больше никому не говори»");
+    });
+  }
+
+  /* если квест уже пройден — сразу показываем награду */
+  if (quest.done) {
+    var exists = false;
+    for (var i = 0; i < PRODUCTS.length; i++) {
+      if (PRODUCTS[i].id === SECRET_PRODUCT.id) exists = true;
+    }
+    if (!exists) {
+      PRODUCTS.push(SECRET_PRODUCT);
+      renderCatalog();
+      renderChips();
+    }
+    COUPONS["ПОБЕДА"] = { kind: "percent", value: 50, label: "награда за квест: скидка 50%" };
+  }
+
+  renderQuest();
+}
+
+/* ---------- форма заявки на работу ---------- */
+var JOB_COOLDOWN_MS = 30 * 60 * 1000;
+var JOB_KEY = "prz_job_last";
+
+function jobWaitLeft() {
+  try {
+    var last = parseInt(localStorage.getItem(JOB_KEY) || "0", 10) || 0;
+    var left = last + JOB_COOLDOWN_MS - Date.now();
+    return left > 0 ? left : 0;
+  } catch (e) {
+    return 0;
+  }
+}
+
+function jobWaitText(ms) {
+  var min = Math.ceil(ms / 60000);
+  return "Следующую заявку можно отправить через " + min + " мин.";
+}
+
+function updateJobCooldown() {
+  var box = document.getElementById("jobCooldown");
+  var btn = document.querySelector('#jobForm button[type="submit"]');
+  var left = jobWaitLeft();
+
+  if (!box) return;
+
+  if (left > 0) {
+    box.hidden = false;
+    box.textContent = jobWaitText(left) + " Заявка уже принята, спасибо!";
+    if (btn) btn.disabled = true;
+  } else {
+    box.hidden = true;
+    if (btn) btn.disabled = false;
+  }
+}
+
+function validateJobForm(data) {
+  if (!data.name || data.name.length < 2) return "Напиши, как тебя зовут";
+  var age = parseInt(data.age, 10);
+  if (!age || age < 10 || age > 99) return "Возраст должен быть от 10 до 99";
+  if (!data.position) return "Выбери должность";
+  if (!data.contact || data.contact.length < 4) return "Оставь телефон или почту";
+  if (!data.experience || data.experience.length < 5) return "Расскажи про опыт чуть подробнее";
+  if (!data.why || data.why.length < 10) return "Ответь, почему мы должны тебя взять";
+  return null;
+}
+
+function initJobForm() {
+  var form = document.getElementById("jobForm");
+  if (!form) return;
+
+  updateJobCooldown();
+  setInterval(updateJobCooldown, 30000);
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    var note = document.getElementById("jobNote");
+    var left = jobWaitLeft();
+
+    if (left > 0) {
+      note.className = "jobform__note is-bad";
+      note.textContent = jobWaitText(left);
+      updateJobCooldown();
+      return;
+    }
+
+    var data = {};
+    var inputs = form.querySelectorAll("input, select, textarea");
+    for (var i = 0; i < inputs.length; i++) {
+      var f = inputs[i];
+      if (!f.name || f.name === "form-name" || f.name === "bot-field") continue;
+      data[f.name] = f.type === "checkbox" ? (f.checked ? "да" : "нет") : String(f.value || "").trim();
+    }
+
+    if (data["bot-field"]) return;
+
+    var problem = validateJobForm(data);
+    if (problem) {
+      note.className = "jobform__note is-bad";
+      note.textContent = problem;
+      return;
+    }
+
+    var submitBtn = form.querySelector('button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
+    note.className = "jobform__note";
+    note.textContent = "Отправляем заявку...";
+
+    fetch("/api/apply", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+      .then(function (r) {
+        if (!r.ok) throw new Error("bad status " + r.status);
+        write(JOB_KEY, Date.now());
+        note.className = "jobform__note";
+        note.textContent = "Заявка принята! Она уже у Камиля на рабочем столе. 🍉";
+        form.reset();
+        updateJobCooldown();
+      })
+      .catch(function () {
+        note.className = "jobform__note is-bad";
+        note.textContent = "Не отправилось. Попробуй ещё раз через минуту.";
+        if (submitBtn) submitBtn.disabled = false;
+      });
+  });
+}
+
+/* ---------- счётчик и покупатели (локально, без сервера) ---------- */
+function setSyncNote(text, ok) {
+  var el = document.getElementById("buyersSync");
+  if (!el) return;
+  el.textContent = text;
+  el.classList.toggle("is-off", !ok);
+}
+
+function renderBuyers(buyers) {
+  var box = document.getElementById("buyersList");
+  if (!box) return;
+
+  box.innerHTML = "";
+
+  if (!buyers || buyers.length === 0) {
+    var empty = document.createElement("p");
+    empty.className = "buyers__empty";
+    empty.textContent = "Пока никто. Будь первым!";
+    box.appendChild(empty);
+    return;
+  }
+
+  buyers.slice(0, 12).forEach(function (b, i) {
+    var row = document.createElement("div");
+    row.className = "buyer" + (i === 0 ? " buyer--top" : "");
+
+    var place = document.createElement("span");
+    place.className = "buyer__place";
+    place.textContent = (i + 1) + ".";
+
+    var name = document.createElement("span");
+    name.className = "buyer__name";
+    name.textContent = b.name;
+
+    var count = document.createElement("span");
+    count.className = "buyer__count";
+    count.textContent = b.count + " шт";
+
+    row.appendChild(place);
+    row.appendChild(name);
+    row.appendChild(count);
+    box.appendChild(row);
+  });
+}
+
+function syncFromServer() {
+  renderBuyers(buyers);
+  setSyncNote("Считается на этом устройстве", false);
+  return Promise.resolve();
+}
+
+function pushToServer(name, count) {
+  var entry = null;
+  for (var i = 0; i < buyers.length; i++) {
+    if (buyers[i] && buyers[i].name === name) { entry = buyers[i]; break; }
+  }
+
+  if (entry) {
+    entry.count = (entry.count || 0) + count;
+  } else {
+    buyers.push({ name: name, count: count });
+  }
+
+  buyers.sort(function (a, b) { return (b.count || 0) - (a.count || 0); });
+  buyers = buyers.slice(0, 20);
+  write(STORE.buyers, buyers);
+  renderBuyers(buyers);
+  setSyncNote("Считается на этом устройстве", false);
+}
+
+/* ---------- корзина ---------- */
+function cartCount() { var n = 0; for (var id in cart) n += cart[id]; return n; }
+
+function cartSum() {
+  var sum = 0;
+  for (var id in cart) { var p = productById(id); if (p) sum += p.price * cart[id]; }
+  return sum;
+}
+
+function cartTotal() {
+  var sum = cartSum();
+
+  if (cartCount() === 0) return 0;
+
+  var shipCost = ship === "delivery" ? SHIP_FEE : 0;
+  var freeShip = coupon && COUPONS[coupon] && COUPONS[coupon].kind === "shipping";
+  if (freeShip) shipCost = 0;
+
+  if (coupon && COUPONS[coupon] && COUPONS[coupon].kind === "percent") {
+    sum = Math.round(sum * (1 - COUPONS[coupon].value / 100));
+  }
+
+  return sum + shipCost;
+}
+
+function applyCoupon(code) {
+  var note = document.getElementById("couponNote");
+  var clean = (code || "").trim().toUpperCase();
+
+  if (!clean) {
+    coupon = null;
+    write(STORE.coupon, coupon);
+    note.className = "coupon__note";
+    note.textContent = "Промокод не найден — это не баг, это фича.";
+    renderCart();
+    return;
+  }
+
+  if (!COUPONS[clean]) {
+    note.className = "coupon__note is-bad";
+    note.textContent = "Промокод «" + clean + "» не подошёл. Попробуй БАБУШКА или КОСТОЧКИ.";
+    return;
+  }
+
+  coupon = clean;
+  write(STORE.coupon, coupon);
+  note.className = "coupon__note is-ok";
+  note.textContent = "Промокод применён: " + COUPONS[clean].label;
+  renderCart();
+  toast("Промокод «" + clean + "» применён");
+}
+
+function addToCart(id, btn) {
+  var p = productById(id);
+  if (!p) return;
+
+  cart[id] = (cart[id] || 0) + 1;
+  write(STORE.cart, cart);
+  renderCart();
+  toast(p.name + " в корзине");
+
+  if (btn) {
+    var old = btn.textContent;
+    btn.textContent = "Добавлено ✓";
+    btn.disabled = true;
+    setTimeout(function () { btn.textContent = old; btn.disabled = false; }, 1200);
+  }
+  openCart();
+}
+
+function changeQty(id, delta) {
+  if (!cart[id]) return;
+  cart[id] += delta;
+  if (cart[id] <= 0) delete cart[id];
+  write(STORE.cart, cart);
+  renderCart();
+}
+
+function clearCart() {
+  cart = {};
+  write(STORE.cart, cart);
+  renderCart();
+}
+
+function renderCart() {
+  var countEl = document.getElementById("cartCount");
+  var totalEl = document.getElementById("cartTotal");
+  var weightEl = document.getElementById("cartWeight");
+  var box = document.getElementById("cartItems");
+
+  if (countEl) countEl.textContent = cartCount();
+  if (totalEl) totalEl.textContent = money(cartTotal());
+  if (weightEl) weightEl.textContent = cartWeight() + " кг · " + cartCount() + " шт";
+  if (!box) return;
+
+  box.innerHTML = "";
+  var ids = Object.keys(cart);
+
+  if (ids.length === 0) {
+    var empty = document.createElement("p");
+    empty.className = "cart__empty";
+    empty.textContent = "Пока пусто. Купи арбуз.";
+    box.appendChild(empty);
+    return;
+  }
+
+  ids.forEach(function (id) {
+    var prod = productById(id);
+    if (!prod) return;
+
+    var row = document.createElement("div");
+    row.className = "cart__item";
+
+    var info = document.createElement("div");
+    var name = document.createElement("b");
+    name.textContent = prod.icon + " " + prod.name;
+    var one = document.createElement("small");
+    one.textContent = money(prod.price) + " за штуку";
+    info.appendChild(name);
+    info.appendChild(one);
+
+    var qty = document.createElement("div");
+    qty.className = "cart__qty";
+
+    var minus = document.createElement("button");
+    minus.type = "button";
+    minus.textContent = "−";
+    minus.addEventListener("click", function () { changeQty(id, -1); });
+
+    var num = document.createElement("span");
+    num.textContent = cart[id];
+
+    var plus = document.createElement("button");
+    plus.type = "button";
+    plus.textContent = "+";
+    plus.addEventListener("click", function () { changeQty(id, 1); });
+
+    qty.appendChild(minus); qty.appendChild(num); qty.appendChild(plus);
+
+    var right = document.createElement("div");
+    right.className = "cart__right";
+
+    var price = document.createElement("div");
+    price.className = "price";
+    price.textContent = money(prod.price * cart[id]);
+
+    var del = document.createElement("button");
+    del.type = "button";
+    del.className = "link-del";
+    del.textContent = "убрать";
+    del.addEventListener("click", function () {
+      delete cart[id];
+      write(STORE.cart, cart);
+      renderCart();
+    });
+
+    right.appendChild(price);
+    right.appendChild(del);
+
+    row.appendChild(info);
+    row.appendChild(qty);
+    row.appendChild(right);
+    box.appendChild(row);
+  });
+}
+
+function openCart() {
+  var c = document.getElementById("cart");
+  c.hidden = false;
+  c.classList.add("is-open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeCart() {
+  var c = document.getElementById("cart");
+  if (!c) return;
+  c.classList.remove("is-open");
+  c.hidden = true;
+  c.style.display = "none";
+  document.body.style.overflow = "";
+}
+
+/* ---------- доставка ---------- */
+function renderShip() {
+  var buttons = document.querySelectorAll(".ship__btn");
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].classList.toggle("is-active", buttons[i].getAttribute("data-ship") === ship);
+  }
+  document.getElementById("shipNote").textContent =
+    ship === "pickup"
+      ? "Самовывоз бесплатно: склад на бабушкиной даче, спроси пароль"
+      : "Доставка " + money(SHIP_FEE) + " — курьер приедет за арбузом лично";
+}
+
+/* ---------- оформление заказа ---------- */
+function digitsOnly(s) { return String(s).replace(/\D/g, ""); }
+
+function checkout() {
+  var note = document.getElementById("orderNote");
+
+  if (cartCount() === 0) {
+    note.textContent = "Сначала положи арбуз в корзину.";
+    toast("Корзина пуста");
+    return;
+  }
+
+  var name = document.getElementById("orderName").value.trim();
+  var phone = digitsOnly(document.getElementById("orderPhone").value);
+  var addr = document.getElementById("orderAddr").value.trim();
+
+  if (name.length < 2) { note.textContent = "Введи имя (хотя бы 2 буквы)."; return; }
+  if (phone.length < 11) { note.textContent = "Телефон должен быть из 11 цифр."; return; }
+  if (addr.length < 3) { note.textContent = "Напиши адрес или слово «самовывоз»."; return; }
+
+  var count = cartCount();
+  var total = cartTotal();
+
+  addSold(count);
+  pushToServer(name, count);
+
+  var orderNo = "PRZ-" + Math.floor(100000 + Math.random() * 899999);
+  var usedCoupon = coupon;
+  var questCodeUsed = coupon === QUEST_CODE;
+  if (questCodeUsed && quest.zina && !quest.done) unlockSecretProduct();
+  var receipt = buildReceipt(orderNo, count, total, addr, phone);
+  showReceipt(receipt);
+  note.textContent = "";
+  closeCart();
+
+  toast("Заказ " + orderNo + " на " + money(total) + ". Арбузов: " + count + ". Позвоним на +7" + phone.slice(0, 10));
+
+  if (usedCoupon) {
+    toast("Промокод «" + usedCoupon + "» сработал на этот заказ. Следующий — вводи заново.");
+  }
+  toast("Счётчик продаж: " + sold + " арбузов 🍉");
+
+  /* промокод одноразовый: на следующий заказ его нужно ввести снова */
+  coupon = null;
+  write(STORE.coupon, null);
+  document.getElementById("couponInput").value = "";
+  var couponNote = document.getElementById("couponNote");
+  couponNote.className = "coupon__note";
+  couponNote.textContent = usedCoupon
+    ? "Промокод «" + usedCoupon + "» использован. Сработает только на этот заказ."
+    : "Промокод не найден — это не баг, это фича.";
+
+  document.getElementById("orderName").value = "";
+  document.getElementById("orderPhone").value = "";
+  document.getElementById("orderAddr").value = "";
+  clearCart();
+}
+
+/* ---------- отзывы ---------- */
+function renderReviews() {
+  var box = document.getElementById("reviewList");
+  box.innerHTML = "";
+
+  BASE_REVIEWS.concat(reviews).forEach(function (r) {
+    var b = document.createElement("blockquote");
+    b.className = "review";
+
+    var p = document.createElement("p");
+    p.textContent = "«" + r.text + "»";
+
+    var f = document.createElement("footer");
+    f.textContent = "— " + r.name + ", " + (r.tag || "отзыв");
+
+    b.appendChild(p);
+    b.appendChild(f);
+    box.appendChild(b);
+  });
+}
+
+function addReview(event) {
+  event.preventDefault();
+
+  var name = document.getElementById("reviewName").value.trim();
+  var text = document.getElementById("reviewText").value.trim();
+  var note = document.getElementById("reviewNote");
+
+  if (name.length < 2) { note.textContent = "Напиши, как тебя зовут."; return; }
+  if (text.length < 5) { note.textContent = "Отзыв слишком короткий."; return; }
+
+  reviews.push({ name: name, text: text, tag: "твой отзыв" });
+  write(STORE.reviews, reviews);
+  renderReviews();
+
+  note.textContent = "Спасибо! Отзыв уже в списке.";
+  document.getElementById("reviewName").value = "";
+  document.getElementById("reviewText").value = "";
+  toast("Отзыв добавлен");
+}
+
+function renderSold() {
+  var hero = document.getElementById("soldCount");
+  var top = document.getElementById("soldTop");
+  if (hero) hero.textContent = sold;
+  if (top) top.textContent = sold;
+}
+
+/* увеличиваем счётчик с «перекруткой» цифр */
+function addSold(n) {
+  var from = sold;
+  sold = sold + n;
+  write(STORE.sold, sold);
+
+  var hero = document.getElementById("soldCount");
+  var box = document.getElementById("soldBox");
+  var top = document.getElementById("soldTop");
+
+  if (box) {
+    box.classList.add("is-bump");
+    setTimeout(function () { box.classList.remove("is-bump"); }, 520);
+  }
+  if (hero) hero.classList.add("is-bump");
+
+  var steps = 12;
+  var i = 0;
+  var timer = setInterval(function () {
+    i++;
+    var value = Math.round(from + (sold - from) * (i / steps));
+    if (hero) hero.textContent = value;
+    if (top) top.textContent = value;
+    if (i >= steps) {
+      clearInterval(timer);
+      renderSold();
+      if (hero) hero.classList.remove("is-bump");
+    }
+  }, 35);
+}
+
+/* ---------- поделиться ---------- */
+function copyCurrentLink() {
+  var link = window.location.href;
+  var done = function () { toast("Ссылка скопирована"); };
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(link).then(done, fallbackCopy);
+  } else {
+    fallbackCopy();
+  }
+
+  function fallbackCopy() {
+    var ta = document.createElement("textarea");
+    ta.value = link;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); done(); }
+    catch (e) { toast("Скопируй вручную: " + link); }
+    document.body.removeChild(ta);
+  }
+}
+
+function setupShare() {
+  var url = encodeURIComponent(window.location.href);
+  var text = encodeURIComponent("Залетай на Pereprodazhniki — тут продают арбузы со смехом");
+
+  var tg = document.getElementById("shareTg");
+  var vk = document.getElementById("shareVk");
+  if (tg) tg.href = "https://t.me/share/url?url=" + url + "&text=" + text;
+  if (vk) vk.href = "https://vk.com/share.php?url=" + url + "&title=" + text;
+
+  var copy = document.getElementById("copyLink");
+  if (copy) copy.addEventListener("click", copyCurrentLink);
+}
+
+/* ---------- калькулятор ---------- */
+function renderCalc() {
+  var perWeek = parseInt(document.getElementById("calcPerWeek").value, 10);
+  var weight = parseInt(document.getElementById("calcWeight").value, 10);
+
+  document.getElementById("calcPerWeekOut").textContent = perWeek;
+  document.getElementById("calcWeightOut").textContent = weight + " кг";
+
+  var yearKg = perWeek * weight * 52;
+  var yearMoney = yearKg * 400;
+  var lifetimes = Math.floor(yearKg / weight);
+
+  document.getElementById("calcYearKg").textContent = yearKg.toLocaleString("ru-RU");
+  document.getElementById("calcYearMoney").textContent = money(yearMoney);
+  document.getElementById("calcLifetimes").textContent = lifetimes;
+
+  var note = document.getElementById("calcNote");
+  note.classList.remove("is-warn");
+
+  if (yearKg > 2000) {
+    note.classList.add("is-warn");
+    note.textContent = "Это " + Math.round(yearKg / 1000 * 10) / 10 + " тонны в год. Позвони вожатю.";
+  } else if (yearKg > 700) {
+    note.classList.add("is-warn");
+    note.textContent = "Серьёзный аппетит. Готовы выдать скидку оптом.";
+  } else if (perWeek <= 2) {
+    note.textContent = "Скромно. Купи один боевой — и статистика исправится.";
+  } else {
+    note.textContent = "Нормальный аппетит. Ничего подозрительного.";
+  }
+}
+
+/* ---------- розыгрыш ---------- */
+var PRIZES = [
+  { weight: 40, text: "Ничего. Но мы улыбнулись в твою сторону." },
+  { weight: 18, text: "Скидка 50 ₽ на следующий заказ." },
+  { weight: 18, text: "Беленький передаёт привет и обещает поставку." },
+  { weight: 14, text: "Сафия вписала тебя в список должников." },
+  { weight: 10, text: "Подарок: самый дешёвый арбуз добавлен в корзину!", gift: true }
+];
+
+function spin() {
+  var total = 0;
+  PRIZES.forEach(function (p) { total += p.weight; });
+
+  var roll = Math.random() * total;
+  var acc = 0;
+  var chosen = PRIZES[0];
+
+  for (var i = 0; i < PRIZES.length; i++) {
+    acc += PRIZES[i].weight;
+    if (roll <= acc) { chosen = PRIZES[i]; break; }
+  }
+
+  document.getElementById("lotteryResult").textContent = chosen.text;
+
+  if (chosen.gift) {
+    var cheapest = PRODUCTS[0];
+    for (var j = 1; j < PRODUCTS.length; j++) {
+      if (PRODUCTS[j].price < cheapest.price) cheapest = PRODUCTS[j];
+    }
+    cart[cheapest.id] = (cart[cheapest.id] || 0) + 1;
+    write(STORE.cart, cart);
+    renderCart();
+  }
+
+  var log = document.getElementById("lotteryLog");
+  var li = document.createElement("li");
+  li.textContent = chosen.text;
+  log.insertBefore(li, log.firstChild);
+
+  while (log.children.length > 5) log.removeChild(log.lastChild);
+}
+
+/* ---------- отсчёт до конца сезона ---------- */
+function renderSeason() {
+  var now = new Date();
+  var end = new Date(now.getFullYear(), 11, 31);
+  var days = Math.ceil((end - now) / 86400000);
+  document.getElementById("seasonDays").textContent = days < 0 ? 0 : days;
+}
+
+/* ---------- тема ---------- */
+function applyTheme(theme) {
+  document.body.classList.toggle("light", theme === "light");
+  var btn = document.getElementById("themeToggle");
+  if (btn) btn.textContent = theme === "light" ? "☀️" : "🌙";
+}
+
+function initTheme() {
+  var saved = "dark";
+  try { saved = localStorage.getItem("prz_theme") || "dark"; } catch (e) {}
+  applyTheme(saved);
+
+  var btn = document.getElementById("themeToggle");
+  if (!btn) return;
+
+  btn.addEventListener("click", function () {
+    var next = document.body.classList.contains("light") ? "dark" : "light";
+    applyTheme(next);
+    try { localStorage.setItem("prz_theme", next); } catch (e) {}
+    toast(next === "light" ? "Светлая тема" : "Тёмная тема");
+  });
+}
+
+/* ---------- старт ---------- */
+function init() {
+  renderCatalog();
+  renderCart();
+  renderShip();
+  renderSold();
+  renderReviews();
+  setupShare();
+
+  /* показываем активный промокод при загрузке страницы */
+  var couponNote = document.getElementById("couponNote");
+  if (coupon && COUPONS[coupon] && cartCount() > 0) {
+    couponNote.className = "coupon__note is-ok";
+    couponNote.textContent = "Промокод применён: " + COUPONS[coupon].label;
+  } else {
+    coupon = null;
+    write(STORE.coupon, null);
+    renderCart();
+  }
+
+  document.getElementById("search").addEventListener("input", renderCatalog);
+  document.getElementById("sort").addEventListener("change", renderCatalog);
+  document.getElementById("cartClear").addEventListener("click", function () { clearCart(); toast("Корзина очищена"); });
+  document.getElementById("checkout").addEventListener("click", checkout);
+  document.getElementById("reviewForm").addEventListener("submit", addReview);
+
+  document.getElementById("couponApply").addEventListener("click", function () {
+    applyCoupon(document.getElementById("couponInput").value);
+  });
+  document.getElementById("couponInput").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") { e.preventDefault(); applyCoupon(this.value); }
+  });
+
+  document.getElementById("calcPerWeek").addEventListener("input", renderCalc);
+  document.getElementById("calcWeight").addEventListener("input", renderCalc);
+  renderCalc();
+
+  document.getElementById("lotteryBtn").addEventListener("click", spin);
+  renderSeason();
+
+  initTheme();
+
+  /* чек */
+  document.getElementById("receiptCopy").addEventListener("click", function () {
+    copyText(lastReceipt, "Чек скопирован");
+  });
+
+  /* викторина */
+  document.getElementById("quizBtn").addEventListener("click", function () { quizStart(); });
+
+  /* голосование и генератор имён */
+  renderVotes();
+  document.getElementById("nameGen").addEventListener("click", generateName);
+
+  initEasterEgg();
+  initQuest();
+  initJobForm();
+
+  /* счётчик и список покупателей: локально */
+  syncFromServer();
+
+  var buttons = document.querySelectorAll(".ship__btn");
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", function () {
+      ship = this.getAttribute("data-ship");
+      write(STORE.ship, ship);
+      renderShip();
+      renderCart();
+    });
+  }
+
+  document.getElementById("jokeBtn").addEventListener("click", function () {
+    document.getElementById("jokeText").textContent = JOKES[Math.floor(Math.random() * JOKES.length)];
+  });
+
+  document.getElementById("tipBtn").addEventListener("click", function () {
+    document.getElementById("tipText").textContent =
+      "Бабушка говорит: " + TIPS[Math.floor(Math.random() * TIPS.length)].toLowerCase();
+  });
+
+  document.getElementById("lastMelon").addEventListener("click", function () {
+    var p = PRODUCTS[Math.floor(Math.random() * PRODUCTS.length)];
+    cart[p.id] = (cart[p.id] || 0) + 1;
+    write(STORE.cart, cart);
+    renderCart();
+    openCart();
+    toast("Последний арбуз добавлен: " + p.name);
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeCart();
+  });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
+} else {
+  init();
+}
+</script>
+</body>
+</html>
