@@ -2155,7 +2155,7 @@ function initJobForm() {
         if (!r.ok) throw new Error("bad status " + r.status);
         write(JOB_KEY, Date.now());
         note.className = "jobform__note";
-        note.textContent = "Заявка принята! Она уже у Камиля на рабочем столе. 🍉";
+        note.textContent = "Заявка принята! Она летит Камилю на рабочий стол. 🍉";
         form.reset();
         updateJobCooldown();
       })
