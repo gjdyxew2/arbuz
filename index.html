@@ -1312,7 +1312,7 @@ body.light .jobform__cooldown { background: #f2fff7; border-color: #12803c; colo
 
   <section class="section" id="vote">
     <h2 class="section__title">Твой любимый сорт</h2>
-    <p class="section__sub">Голосуй, все сорта смотрят. Кто победил — привезём первым.</p>
+    <p class="section__sub">Голосуй — счётчик общий, результаты видят все. Кто победил, того привезём первым.</p>
     <div class="votes" id="voteList"></div>
     <button class="btn btn--ghost" id="nameGen" type="button">Сгенерировать имя для арбуза</button>
     <p class="tip__text" id="nameOut">Нажми кнопку — бабушка придумает имя.</p>
@@ -1796,14 +1796,49 @@ function renderQuiz() {
   });
 }
 
-/* ---------- голосование ---------- */
+/* ---------- голосование (общий счётчик для всех) ---------- */
 var votes = read(STORE.votes, {});
 var voted = read(STORE.voted, false);
 
+var VOTE_API = "https://abacus.jasoncameron.dev";
+var VOTE_NS = "pereprodazhniki-8c41f2";
+var serverVotes = {};
+var votesLoaded = false;
+
+function voteCount(id) {
+  if (votesLoaded && typeof serverVotes[id] === "number") return serverVotes[id];
+  return votes[id] || 0;
+}
+
 function voteTotal() {
   var n = 0;
-  for (var id in votes) n += votes[id];
+  PRODUCTS.forEach(function (p) { n += voteCount(p.id); });
   return n;
+}
+
+function loadVotes() {
+  var ids = PRODUCTS.map(function (p) { return p.id; });
+  return Promise.all(ids.map(function (id) {
+    return fetch(VOTE_API + "/get/" + VOTE_NS + "/" + id)
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d && typeof d.value === "number") serverVotes[id] = d.value;
+      })
+      .catch(function () {});
+  })).then(function () {
+    votesLoaded = true;
+    renderVotes();
+  });
+}
+
+function sendVote(id) {
+  return fetch(VOTE_API + "/hit/" + VOTE_NS + "/" + id)
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (d && typeof d.value === "number") serverVotes[id] = d.value;
+      renderVotes();
+    })
+    .catch(function () {});
 }
 
 function renderVotes() {
@@ -1812,7 +1847,7 @@ function renderVotes() {
   var total = voteTotal();
 
   PRODUCTS.forEach(function (p) {
-    var count = votes[p.id] || 0;
+    var count = voteCount(p.id);
     var pct = total > 0 ? Math.round(count / total * 100) : 0;
 
     var row = document.createElement("div");
@@ -1842,6 +1877,7 @@ function renderVotes() {
       write(STORE.voted, voted);
       renderVotes();
       toast("Голос зачтён: " + p.name);
+      sendVote(p.id);
     });
 
     top.appendChild(name);
@@ -2771,6 +2807,7 @@ function init() {
 
   /* голосование и генератор имён */
   renderVotes();
+  loadVotes();
   document.getElementById("nameGen").addEventListener("click", generateName);
 
   initEasterEgg();
