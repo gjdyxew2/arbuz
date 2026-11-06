@@ -2150,6 +2150,9 @@ function validateJobForm(data) {
   if (!data.contact || data.contact.length < 4) return "Оставь телефон или почту";
   if (!data.experience || data.experience.length < 5) return "Расскажи про опыт чуть подробнее";
   if (!data.why || data.why.length < 10) return "Ответь, почему мы должны тебя взять";
+  if (hasBadWords(data.name) || hasBadWords(data.experience) || hasBadWords(data.why)) {
+    return "Давай без мата — у нас тут бабушки.";
+  }
   return null;
 }
 
@@ -2572,6 +2575,54 @@ function checkout() {
   clearCart();
 }
 
+/* ---------- фильтр плохих слов ---------- */
+var LAT_TO_RU = { a: "а", b: "в", c: "с", e: "е", h: "н", k: "к", m: "м", o: "о", p: "р", t: "т", x: "х", y: "у", "0": "о", "3": "з", "1": "и", "4": "а", "6": "б" };
+
+var BAD_ROOTS = [
+  "хуй", "хуя", "хуе", "хуи", "хуйн", "охуе", "хй",
+  "пизд", "пзд",
+  "бля", "блят", "блть", "блт",
+  "сука", "суки", "сучар",
+  "мудак", "мудил",
+  "пидор", "пидар", "педик",
+  "ебат", "ебал", "ебан", "ебуч", "ебну", "еблан",
+  "заеб", "наеб", "уеб", "отъеб", "разъеб", "долбоеб",
+  "гандон", "гондон",
+  "шлюх",
+  "мразь", "тварь", "дебил", "кретин",
+  "fuck", "shit", "bitch", "asshole", "cunt", "whore", "slut"
+];
+
+function normalizeBad(s) {
+  var t = String(s || "").toLowerCase().replace(/ё/g, "е");
+  var out = "";
+  for (var i = 0; i < t.length; i++) {
+    var ch = t.charAt(i);
+    if (LAT_TO_RU[ch]) ch = LAT_TO_RU[ch];
+    if (/[а-я0-9]/.test(ch)) out += ch;
+  }
+  return out.replace(/(.)\1+/g, "$1");
+}
+
+function hasBadWords(s) {
+  var ru = normalizeBad(s);
+  var en = String(s || "")
+    .toLowerCase()
+    .replace(/[013457]/g, function (d) { return ({ "0": "o", "1": "i", "3": "e", "4": "a", "5": "s", "7": "t" })[d]; })
+    .replace(/[^a-z]/g, "")
+    .replace(/(.)\1+/g, "$1");
+  var i, root;
+  for (i = 0; i < BAD_ROOTS.length; i++) {
+    root = BAD_ROOTS[i];
+    if (/^[a-z]+$/.test(root)) {
+      if (en.indexOf(root) >= 0) return true;
+    } else if (ru.indexOf(root) >= 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /* ---------- отзывы ---------- */
 function renderReviews() {
   var box = document.getElementById("reviewList");
@@ -2602,6 +2653,11 @@ function addReview(event) {
 
   if (name.length < 2) { note.textContent = "Напиши, как тебя зовут."; return; }
   if (text.length < 5) { note.textContent = "Отзыв слишком короткий."; return; }
+
+  if (hasBadWords(name) || hasBadWords(text)) {
+    note.textContent = "Давай без мата — у нас тут бабушки читают.";
+    return;
+  }
 
   reviews.push({ name: name, text: text, tag: "твой отзыв" });
   write(STORE.reviews, reviews);
