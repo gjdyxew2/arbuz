@@ -2143,7 +2143,8 @@ function jobAsText(d) {
 }
 
 function validateJobForm(data) {
-  if (!data.name || data.name.length < 2) return "Напиши, как тебя зовут";
+  var nameErr = nameProblem(data.name);
+  if (nameErr) return nameErr;
   var age = parseInt(data.age, 10);
   if (!age || age < 10 || age > 99) return "Возраст должен быть от 10 до 99";
   if (!data.position) return "Выбери должность";
@@ -2522,8 +2523,8 @@ function checkout() {
   var phone = digitsOnly(document.getElementById("orderPhone").value);
   var addr = document.getElementById("orderAddr").value.trim();
 
-  if (name.length < 2) { note.textContent = "Введи имя (хотя бы 2 буквы)."; return; }
-  if (hasBadWords(name)) { note.textContent = "Давай без мата — у нас тут бабушки."; return; }
+  var nameErr = nameProblem(name);
+  if (nameErr) { note.textContent = nameErr; return; }
   if (phone.length < 11) { note.textContent = "Телефон должен быть из 11 цифр."; return; }
   if (addr.length < 3) { note.textContent = "Напиши адрес или слово «самовывоз»."; return; }
 
@@ -2625,6 +2626,16 @@ function hasBadWords(s) {
   return false;
 }
 
+/* строгая проверка имени: только буквы, пробел и дефис */
+function nameProblem(s) {
+  var t = String(s || "").trim();
+  if (t.length < 2) return "Напиши, как тебя зовут.";
+  if (t.length > 30) return "Слишком длинное имя — максимум 30 букв.";
+  if (!/^[А-Яа-яЁёA-Za-z\- ]+$/.test(t)) return "В имени можно только буквы, пробел и дефис.";
+  if (hasBadWords(t)) return "Давай без мата — у нас тут бабушки.";
+  return null;
+}
+
 /* ---------- отзывы ---------- */
 function renderReviews() {
   var box = document.getElementById("reviewList");
@@ -2653,10 +2664,11 @@ function addReview(event) {
   var text = document.getElementById("reviewText").value.trim();
   var note = document.getElementById("reviewNote");
 
-  if (name.length < 2) { note.textContent = "Напиши, как тебя зовут."; return; }
+  var nameErr = nameProblem(name);
+  if (nameErr) { note.textContent = nameErr; return; }
   if (text.length < 5) { note.textContent = "Отзыв слишком короткий."; return; }
 
-  if (hasBadWords(name) || hasBadWords(text)) {
+  if (hasBadWords(text)) {
     note.textContent = "Давай без мата — у нас тут бабушки читают.";
     return;
   }
