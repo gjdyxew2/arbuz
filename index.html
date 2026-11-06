@@ -1549,6 +1549,13 @@ if (!Array.isArray(reviews)) reviews = [];
 if (typeof sold !== "number" || isNaN(sold) || sold < 0) sold = 0;
 if (!Array.isArray(buyers)) buyers = [];
 
+/* сброс старого локального счётчика продаж: теперь он общий для всех */
+if (!read("prz_sold_reset2", false)) {
+  sold = 0;
+  write(STORE.sold, 0);
+  write("prz_sold_reset2", true);
+}
+
 /* промокоды */
 var COUPONS = {
   "БАБУШКА": { kind: "percent", value: 10, label: "скидка 10%" },
@@ -2479,6 +2486,26 @@ function renderShip() {
 /* ---------- оформление заказа ---------- */
 function digitsOnly(s) { return String(s).replace(/\D/g, ""); }
 
+/* защита от автокликера */
+var PAGE_LOADED_AT = Date.now();
+var MIN_ORDER_GAP_MS = 10000;
+var MAX_ITEMS_PER_ORDER = 20;
+
+function orderTooFast() {
+  var now = Date.now();
+  if (now - PAGE_LOADED_AT < 2500) return "Секунду, страница ещё загружается.";
+
+  var last = 0;
+  try { last = parseInt(localStorage.getItem("prz_last_order") || "0", 10) || 0; } catch (e) {}
+  if (now - last < MIN_ORDER_GAP_MS) {
+    var left = Math.ceil((MIN_ORDER_GAP_MS - (now - last)) / 1000);
+    return "Слишком быстро! Подожди " + left + " сек. и попробуй снова.";
+  }
+
+  try { localStorage.setItem("prz_last_order", String(now)); } catch (e) {}
+  return null;
+}
+
 function checkout() {
   var note = document.getElementById("orderNote");
 
@@ -2498,6 +2525,17 @@ function checkout() {
 
   var count = cartCount();
   var total = cartTotal();
+
+  if (count > MAX_ITEMS_PER_ORDER) {
+    note.textContent = "Максимум " + MAX_ITEMS_PER_ORDER + " арбузов за один заказ.";
+    return;
+  }
+
+  var tooFast = orderTooFast();
+  if (tooFast) {
+    note.textContent = tooFast;
+    return;
+  }
 
   addSold(count);
   pushToServer(name, count);
@@ -2575,6 +2613,44 @@ function addReview(event) {
   toast("Отзыв добавлен");
 }
 
+/* ---------- общий счётчик продаж ---------- */
+var SOLD_API = "https://abacus.jasoncameron.dev";
+var SOLD_NS = "pereprodazhniki-sold-2b71";
+var SOLD_KEY = "total";
+
+function loadSold() {
+  return fetch(SOLD_API + "/get/" + SOLD_NS + "/" + SOLD_KEY)
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (d && typeof d.value === "number") {
+        sold = d.value;
+        write(STORE.sold, sold);
+        renderSold();
+      }
+    })
+    .catch(function () {});
+}
+
+function pushSold(n) {
+  var hits = [];
+  for (var i = 0; i < n; i++) {
+    hits.push(fetch(SOLD_API + "/hit/" + SOLD_NS + "/" + SOLD_KEY).catch(function () {}));
+  }
+  return Promise.all(hits)
+    .then(function () {
+      return fetch(SOLD_API + "/get/" + SOLD_NS + "/" + SOLD_KEY);
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (d && typeof d.value === "number") {
+        sold = d.value;
+        write(STORE.sold, sold);
+        renderSold();
+      }
+    })
+    .catch(function () {});
+}
+
 function renderSold() {
   var hero = document.getElementById("soldCount");
   var top = document.getElementById("soldTop");
@@ -2609,6 +2685,7 @@ function addSold(n) {
       clearInterval(timer);
       renderSold();
       if (hero) hero.classList.remove("is-bump");
+      pushSold(n);
     }
   }, 35);
 }
@@ -2761,6 +2838,7 @@ function init() {
   renderCart();
   renderShip();
   renderSold();
+  loadSold();
   renderReviews();
   setupShare();
 
