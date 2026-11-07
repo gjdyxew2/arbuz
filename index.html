@@ -1005,6 +1005,20 @@ body.light .jobform__cooldown { background: #f2fff7; border-color: #12803c; colo
 }
 .music__title { display: block; margin-bottom: 6px; color: var(--lime); }
 .music__note { margin: 0 0 12px; color: var(--muted); font-size: 13px; line-height: 1.45; }
+.music__track { display: flex; align-items: center; gap: 8px; margin: 4px 0 10px; }
+.music__nav {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--lime);
+  border-radius: 9px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 13px;
+  flex: none;
+}
+.music__nav:hover { border-color: var(--green); }
+.music__name { flex: 1; text-align: center; font-size: 13px; font-weight: 700; color: var(--text); }
 .music__row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
 .music__play {
   background: transparent;
@@ -1079,6 +1093,37 @@ body.light .jobform__cooldown { background: #f2fff7; border-color: #12803c; colo
 .game__big { font-size: clamp(24px, 4vw, 34px); font-weight: 900; color: #fff; margin: 0; }
 .game__hint { color: var(--muted); margin: 0 0 10px; max-width: 480px; }
 .game__hint b { color: var(--lime); }
+.game__send { display: flex; flex-direction: column; gap: 8px; align-items: center; width: min(320px, 92%); margin-bottom: 8px; }
+.game__send[hidden] { display: none; }
+.game__send .input { text-align: center; }
+.game__sendnote { margin: 0; font-size: 13px; color: var(--muted); min-height: 16px; }
+
+.board {
+  margin-top: 16px;
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+.board__head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 10px; color: var(--lime); }
+.board__head span { color: var(--muted); font-size: 13px; font-weight: 600; }
+.board__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.board__item {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: rgba(47, 211, 95, .06);
+  border: 1px solid var(--line);
+}
+.board__item--top { background: rgba(182, 240, 106, .12); border-color: var(--green-dim); }
+.board__place { font-weight: 900; color: var(--muted); text-align: center; }
+.board__item--top .board__place { color: var(--lime); }
+.board__who { font-weight: 700; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.board__score { font-weight: 900; color: var(--lime); }
+.board__empty { color: var(--muted); font-size: 14px; padding: 6px 0; }
 
 /* ---------- Телефон ---------- */
 @media (max-width: 860px) {
@@ -1104,6 +1149,13 @@ body.light .game__overlay { background: radial-gradient(circle at 50% 50%, rgba(
 body.light .game__big { color: #0d2b19; }
 body.light .game__hint { color: #2f5c42; }
 body.light .game__hint b { color: #12803c; }
+body.light .game__sendnote { color: #3d6b52; }
+body.light .board { background: #fff; border-color: #bfe4cc; }
+body.light .board__head { color: #12803c; }
+body.light .board__who { color: #0d2b19; }
+body.light .board__score { color: #12803c; }
+body.light .board__item { background: #f4fff8; border-color: #bfe4cc; }
+body.light .board__item--top { background: #f0ffe0; border-color: #12803c; }
 
 </style>
 </head>
@@ -1132,8 +1184,13 @@ body.light .game__hint b { color: #12803c; }
   <div class="music" id="musicBox">
     <button class="music__btn" id="musicBtn" type="button" title="Музыка" aria-expanded="false" aria-controls="musicPanel">🎵</button>
     <div class="music__panel" id="musicPanel" hidden>
-      <b class="music__title">Арбузный лоу-фай</b>
-      <p class="music__note" id="musicNote">Включи, если хочешь настроение. По умолчанию выключено.</p>
+      <b class="music__title">Арбузный плейлист</b>
+      <div class="music__track">
+        <button class="music__nav" id="musicPrev" type="button" aria-label="Предыдущий трек">⏮</button>
+        <span class="music__name" id="musicTrack">Арбузный шансон</span>
+        <button class="music__nav" id="musicNext" type="button" aria-label="Следующий трек">⏭</button>
+      </div>
+      <p class="music__note" id="musicNote">5 треков в стиле русской попсы. По умолчанию выключено.</p>
       <div class="music__row">
         <button class="music__play" id="musicPlay" type="button">▶ Включить</button>
         <span class="music__vol" id="musicVolOut">45%</span>
@@ -1295,9 +1352,22 @@ body.light .game__hint b { color: #12803c; }
         <div class="game__overlay" id="gameOverlay">
           <p class="game__big" id="gameOverTitle">Готов резать?</p>
           <p class="game__hint" id="gameOverHint">Тащи мышкой по арбузам. Свиной 🐷 — не трогай, будет взрыв.</p>
+          <div class="game__send" id="gameSendBox" hidden>
+            <input class="input" id="gameName" type="text" maxlength="20" placeholder="Имя для рейтинга">
+            <button class="btn btn--big" id="gameSend" type="button">Отправить в рейтинг</button>
+            <p class="game__sendnote" id="gameSendNote"></p>
+          </div>
           <button class="btn btn--big" id="gameStart" type="button">Играть</button>
         </div>
       </div>
+    </div>
+
+    <div class="board">
+      <div class="board__head">
+        <b>🏆 Рейтинг игроков</b>
+        <span id="boardNote">общий для всех</span>
+      </div>
+      <ol class="board__list" id="boardList"><li class="board__empty">Пока пусто. Стань первым!</li></ol>
     </div>
   </section>
 
@@ -3077,33 +3147,139 @@ var MUSIC = {
   on: false,
   timer: null,
   step: 0,
+  loops: 0,
   nextTime: 0,
-  vol: 45
+  vol: 45,
+  track: 0
 };
 
-var MUSIC_BPM = 86;
-var MUSIC_STEP = 60 / MUSIC_BPM / 4;
+/* 5 оригинальных треков «в стиле» — без чужих прав */
+var TRACKS = [
+  {
+    name: "Арбузный шансон",
+    bpm: 92,
+    wave: "triangle",
+    bassWave: "sine",
+    pad: true,
+    arp: true,
+    kick: [0, 8],
+    snare: [4, 12],
+    hat: [2, 6, 10, 14],
+    chords: [
+      { bass: 45, notes: [57, 60, 64] },
+      { bass: 38, notes: [50, 53, 57] },
+      { bass: 40, notes: [52, 56, 59] },
+      { bass: 45, notes: [57, 60, 64] }
+    ],
+    melody: [
+      69, 0, 72, 0, 76, 0, 72, 0, 69, 0, 0, 72, 0, 76, 0, 0,
+      74, 0, 0, 72, 0, 69, 0, 0, 65, 0, 69, 0, 72, 0, 0, 0,
+      68, 0, 71, 0, 76, 0, 71, 0, 68, 0, 0, 64, 0, 68, 0, 0,
+      69, 0, 72, 0, 76, 0, 81, 0, 76, 0, 72, 0, 69, 0, 0, 0
+    ]
+  },
+  {
+    name: "Дискотека у бабушки",
+    bpm: 118,
+    wave: "square",
+    bassWave: "sawtooth",
+    pad: true,
+    arp: true,
+    kick: [0, 4, 8, 12],
+    snare: [4, 12],
+    hat: [2, 6, 10, 14],
+    chords: [
+      { bass: 45, notes: [57, 60, 64, 67] },
+      { bass: 41, notes: [53, 57, 60, 64] },
+      { bass: 36, notes: [52, 55, 59, 64] },
+      { bass: 43, notes: [55, 59, 62, 65] }
+    ],
+    melody: [
+      76, 0, 79, 0, 81, 0, 79, 0, 76, 0, 72, 0, 76, 0, 79, 0,
+      72, 0, 76, 0, 79, 0, 76, 0, 72, 0, 69, 0, 72, 0, 76, 0,
+      79, 0, 76, 0, 72, 0, 76, 0, 79, 0, 81, 0, 79, 0, 76, 0,
+      74, 0, 79, 0, 83, 0, 79, 0, 74, 0, 71, 0, 74, 0, 79, 0
+    ]
+  },
+  {
+    name: "Ночной перекуп",
+    bpm: 100,
+    wave: "sawtooth",
+    bassWave: "square",
+    pad: true,
+    arp: true,
+    kick: [0, 8],
+    snare: [4, 12],
+    hat: [2, 6, 10, 14],
+    chords: [
+      { bass: 45, notes: [57, 60, 64] },
+      { bass: 41, notes: [53, 57, 60] },
+      { bass: 36, notes: [52, 55, 59] },
+      { bass: 43, notes: [55, 59, 62] }
+    ],
+    melody: [
+      69, 0, 0, 0, 72, 0, 0, 0, 76, 0, 0, 0, 72, 0, 0, 0,
+      65, 0, 0, 0, 69, 0, 0, 0, 72, 0, 0, 0, 69, 0, 0, 0,
+      67, 0, 0, 0, 72, 0, 0, 0, 76, 0, 0, 0, 72, 0, 0, 0,
+      67, 0, 0, 0, 71, 0, 0, 0, 74, 0, 0, 0, 71, 0, 0, 0
+    ]
+  },
+  {
+    name: "Колхозный рэп",
+    bpm: 88,
+    wave: "triangle",
+    bassWave: "sine",
+    pad: false,
+    arp: false,
+    kick: [0, 6, 10],
+    snare: [4, 12],
+    hat: [0, 2, 4, 6, 8, 10, 12, 14],
+    chords: [
+      { bass: 45, notes: [57, 60, 64] },
+      { bass: 43, notes: [55, 59, 62] },
+      { bass: 41, notes: [53, 57, 60] },
+      { bass: 40, notes: [52, 56, 59] }
+    ],
+    melody: [
+      57, 0, 0, 60, 0, 0, 64, 0, 0, 0, 60, 0, 57, 0, 0, 0,
+      55, 0, 0, 59, 0, 0, 62, 0, 0, 0, 59, 0, 55, 0, 0, 0,
+      53, 0, 0, 57, 0, 0, 60, 0, 0, 0, 57, 0, 53, 0, 0, 0,
+      52, 0, 0, 56, 0, 0, 59, 0, 0, 0, 56, 0, 52, 0, 0, 0
+    ]
+  },
+  {
+    name: "Лоу-фай на балконе",
+    bpm: 76,
+    wave: "sine",
+    bassWave: "triangle",
+    pad: true,
+    arp: false,
+    kick: [0, 10],
+    snare: [8],
+    hat: [2, 6, 10, 14],
+    chords: [
+      { bass: 45, notes: [57, 60, 64, 67] },
+      { bass: 38, notes: [50, 53, 57, 60] },
+      { bass: 41, notes: [53, 57, 60, 64] },
+      { bass: 40, notes: [52, 56, 59, 62] }
+    ],
+    melody: [
+      76, 0, 0, 74, 0, 72, 0, 0, 69, 0, 0, 72, 0, 74, 0, 0,
+      74, 0, 0, 72, 0, 69, 0, 0, 65, 0, 0, 69, 0, 72, 0, 0,
+      72, 0, 0, 69, 0, 67, 0, 0, 64, 0, 0, 67, 0, 69, 0, 0,
+      71, 0, 0, 68, 0, 64, 0, 0, 59, 0, 0, 64, 0, 68, 0, 0
+    ]
+  }
+];
 
 (function musicPrefs() {
   var v = read("prz_music_vol", 45);
   if (typeof v === "number" && v >= 0 && v <= 100) MUSIC.vol = Math.round(v);
+  var t = read("prz_music_track", 0);
+  if (typeof t === "number" && t >= 0 && t < TRACKS.length) MUSIC.track = Math.floor(t);
 })();
 
-/* аккорды: Am7 — Fmaj7 — Cmaj7 — G7 */
-var CHORDS = [
-  { bass: 45, notes: [57, 60, 64, 67] },
-  { bass: 41, notes: [53, 57, 60, 64] },
-  { bass: 48, notes: [52, 55, 59, 64] },
-  { bass: 43, notes: [55, 59, 62, 65] }
-];
-
-/* мелодия на 4 такта, 0 = пауза */
-var MELODY = [
-  76, 0, 0, 74, 0, 72, 0, 0, 69, 0, 72, 0, 74, 0, 0, 0,
-  72, 0, 0, 69, 0, 67, 0, 0, 64, 0, 67, 0, 69, 0, 0, 0,
-  67, 0, 69, 0, 72, 0, 74, 0, 72, 0, 69, 0, 67, 0, 0, 0,
-  74, 0, 72, 0, 69, 0, 67, 0, 65, 0, 67, 0, 69, 0, 71, 0
-];
+function musicStepDur() { return 60 / TRACKS[MUSIC.track].bpm / 4; }
 
 function midiToFreq(m) { return 440 * Math.pow(2, (m - 69) / 12); }
 
@@ -3214,39 +3390,91 @@ function playHat(time, gain) {
   src.stop(time + 0.06);
 }
 
+function playSnare(time, gain) {
+  var ctx = MUSIC.ctx;
+  if (!ctx) return;
+  var src = ctx.createBufferSource();
+  src.buffer = MUSIC.noise;
+  var f = ctx.createBiquadFilter();
+  f.type = "bandpass";
+  f.frequency.value = 1900;
+  f.Q.value = 0.8;
+  var g = ctx.createGain();
+  g.gain.setValueAtTime(gain, time);
+  g.gain.exponentialRampToValueAtTime(0.0001, time + 0.16);
+  src.connect(f);
+  f.connect(g);
+  g.connect(MUSIC.musicGain);
+  src.start(time);
+  src.stop(time + 0.17);
+
+  playTone(190, time, 0.09, "triangle", gain * 0.5);
+}
+
 function scheduleStep(step, t) {
+  var tr = TRACKS[MUSIC.track];
   var bar = Math.floor(step / 16) % 4;
   var s = step % 16;
-  var ch = CHORDS[bar];
+  var ch = tr.chords[bar];
+  var dur = musicStepDur();
 
-  if (s === 0) {
+  if (tr.kick.indexOf(s) >= 0) {
     playKick(t);
-    playTone(midiToFreq(ch.bass), t, 0.6, "sine", 0.24);
-    playPad(ch.notes.map(midiToFreq), t, MUSIC_STEP * 15.5);
+    playTone(midiToFreq(ch.bass), t, 0.5, tr.bassWave, 0.2);
   }
-  if (s === 8) {
-    playKick(t);
-    playTone(midiToFreq(ch.bass + 12), t, 0.35, "sine", 0.1);
-  }
-  if (s % 2 === 0) {
+  if (tr.snare.indexOf(s) >= 0) playSnare(t, 0.1);
+  if (tr.hat.indexOf(s) >= 0) playHat(t, 0.045);
+
+  if (tr.pad && s === 0) playPad(ch.notes.map(midiToFreq), t, dur * 15.5);
+
+  if (tr.arp && s % 2 === 0) {
     var idx = (s / 2) % ch.notes.length;
     var oct = (s === 6 || s === 14) ? 12 : 0;
-    playTone(midiToFreq(ch.notes[idx] + 12 + oct), t, 0.32, "triangle", 0.085);
+    playTone(midiToFreq(ch.notes[idx] + 12 + oct), t, 0.3, tr.wave, 0.065);
   }
-  if (s % 4 === 2) playHat(t, 0.05);
 
-  var mel = MELODY[step];
-  if (mel) playTone(midiToFreq(mel), t, 0.55, "triangle", 0.06);
+  var mel = tr.melody[step];
+  if (mel) playTone(midiToFreq(mel), t, 0.5, tr.wave === "square" ? "square" : "triangle", 0.055);
 }
 
 function musicTick() {
   var ctx = MUSIC.ctx;
   if (!ctx || !MUSIC.on) return;
-  while (MUSIC.nextTime < ctx.currentTime + 0.3) {
+  var guard = 0;
+  while (MUSIC.nextTime < ctx.currentTime + 0.35 && guard++ < 80) {
     scheduleStep(MUSIC.step, MUSIC.nextTime);
-    MUSIC.nextTime += MUSIC_STEP;
-    MUSIC.step = (MUSIC.step + 1) % 64;
+    MUSIC.nextTime += musicStepDur();
+    MUSIC.step += 1;
+
+    if (MUSIC.step >= 64) {
+      MUSIC.step = 0;
+      MUSIC.loops += 1;
+      if (MUSIC.loops >= 4) {
+        MUSIC.loops = 0;
+        MUSIC.track = (MUSIC.track + 1) % TRACKS.length;
+        write("prz_music_track", MUSIC.track);
+        updateMusicUI();
+      }
+    }
   }
+}
+
+function setTrack(i, silent) {
+  MUSIC.track = ((i % TRACKS.length) + TRACKS.length) % TRACKS.length;
+  write("prz_music_track", MUSIC.track);
+  MUSIC.step = 0;
+  MUSIC.loops = 0;
+
+  var ctx = MUSIC.ctx;
+  if (MUSIC.on && ctx && MUSIC.musicGain) {
+    MUSIC.nextTime = ctx.currentTime + 0.12;
+    MUSIC.musicGain.gain.cancelScheduledValues(ctx.currentTime);
+    MUSIC.musicGain.gain.setValueAtTime(0.0001, ctx.currentTime);
+    MUSIC.musicGain.gain.linearRampToValueAtTime(musicVolumeGain(), ctx.currentTime + 0.35);
+  }
+
+  updateMusicUI();
+  if (!silent) toast("Трек: " + TRACKS[MUSIC.track].name);
 }
 
 function startMusic() {
@@ -3256,6 +3484,7 @@ function startMusic() {
 
   MUSIC.on = true;
   MUSIC.step = 0;
+  MUSIC.loops = 0;
   MUSIC.nextTime = ctx.currentTime + 0.15;
 
   MUSIC.musicGain.gain.cancelScheduledValues(ctx.currentTime);
@@ -3299,6 +3528,8 @@ function updateMusicUI() {
   var note = document.getElementById("musicNote");
   var volOut = document.getElementById("musicVolOut");
   var vol = document.getElementById("musicVol");
+  var name = document.getElementById("musicTrack");
+  var tr = TRACKS[MUSIC.track];
 
   if (btn) {
     btn.textContent = MUSIC.on ? "🎶" : "🎵";
@@ -3306,10 +3537,11 @@ function updateMusicUI() {
     btn.title = MUSIC.on ? "Музыка играет — нажми, чтобы настроить" : "Музыка выключена";
   }
   if (play) play.textContent = MUSIC.on ? "⏸ Выключить" : "▶ Включить";
+  if (name) name.textContent = (MUSIC.track + 1) + "/" + TRACKS.length + " · " + tr.name;
   if (note) {
     note.textContent = MUSIC.on
-      ? "Играет. Громкость — ползунком ниже."
-      : "Включи, если хочешь настроение. По умолчанию выключено.";
+      ? "Играет «" + tr.name + "». Громкость — ползунком ниже."
+      : "5 треков в стиле русской попсы. По умолчанию выключено.";
   }
   if (volOut) volOut.textContent = MUSIC.vol + "%";
   if (vol) vol.value = MUSIC.vol;
@@ -3320,6 +3552,8 @@ function initMusic() {
   var panel = document.getElementById("musicPanel");
   var play = document.getElementById("musicPlay");
   var vol = document.getElementById("musicVol");
+  var prev = document.getElementById("musicPrev");
+  var next = document.getElementById("musicNext");
   if (!btn || !panel || !play || !vol) return;
 
   updateMusicUI();
@@ -3333,6 +3567,9 @@ function initMusic() {
   play.addEventListener("click", function () {
     if (MUSIC.on) stopMusic(); else startMusic();
   });
+
+  if (prev) prev.addEventListener("click", function () { setTrack(MUSIC.track - 1); });
+  if (next) next.addEventListener("click", function () { setTrack(MUSIC.track + 1); });
 
   vol.addEventListener("input", function () {
     setMusicVolume(parseInt(this.value, 10) || 0);
@@ -3776,6 +4013,7 @@ function gameStart() {
   document.getElementById("gameOverTitle").textContent = "Готов резать?";
   document.getElementById("gameOverHint").textContent = "Тащи мышкой по арбузам. Свиной 🐷 — не трогай, будет взрыв.";
   document.getElementById("gameStart").textContent = "Играть";
+  lbHideSend();
 
   gameUpdateHud();
   cancelAnimationFrame(GAME.raf);
@@ -3802,6 +4040,7 @@ function gameOver() {
     (isRecord ? "<br>Новый рекорд! 🏆" : "");
   document.getElementById("gameStart").textContent = "Ещё раз";
   document.getElementById("gameOverlay").hidden = false;
+  lbShowSend();
 
   sfxGameOver();
 }
@@ -3938,6 +4177,217 @@ function initGame() {
   gameDrawIdle();
 }
 
+/* ---------- общий рейтинг игры ---------- */
+var LB = {
+  topic: "prz-liga-7b21e4",
+  postUrl: "https://ntfy.sh/prz-liga-7b21e4",
+  liveUrl: "https://ntfy.sh/prz-liga-7b21e4/json?poll=1&since=12h",
+  archiveUrl: "https://raw.githubusercontent.com/pereprodazhniki/arbuz/main/leaderboard.json",
+  scores: [],
+  seen: {},
+  lastSent: read("prz_lb_last", 0) || 0,
+  loaded: false
+};
+
+function lbParse(text) {
+  var parts = String(text || "").split("|");
+  if (parts.length < 4 || parts[0] !== "LB") return null;
+  return { name: parts[1], score: parseInt(parts[2], 10), ts: parseInt(parts[3], 10) };
+}
+
+function lbAdd(name, score, ts, key) {
+  name = String(name || "").trim();
+  score = parseInt(score, 10);
+  ts = parseInt(ts, 10) || 0;
+
+  if (nameProblem(name)) return false;
+  if (!isFinite(score) || score <= 0 || score > 1000000) return false;
+
+  var k = key || (name.toLowerCase() + "|" + score + "|" + Math.floor(ts / 1000));
+  if (LB.seen[k]) return false;
+  LB.seen[k] = true;
+
+  LB.scores.push({ name: name, score: score, ts: ts });
+  LB.scores.sort(function (a, b) {
+    return b.score - a.score || a.ts - b.ts;
+  });
+  if (LB.scores.length > 50) LB.scores.length = 50;
+  return true;
+}
+
+function lbRender() {
+  var list = document.getElementById("boardList");
+  if (!list) return;
+
+  list.innerHTML = "";
+  if (!LB.scores.length) {
+    var empty = document.createElement("li");
+    empty.className = "board__empty";
+    empty.textContent = "Пока пусто. Стань первым!";
+    list.appendChild(empty);
+    return;
+  }
+
+  var medals = ["🥇", "🥈", "🥉"];
+  LB.scores.slice(0, 10).forEach(function (s, i) {
+    var li = document.createElement("li");
+    li.className = "board__item" + (i < 3 ? " board__item--top" : "");
+
+    var place = document.createElement("span");
+    place.className = "board__place";
+    place.textContent = medals[i] || (i + 1);
+
+    var who = document.createElement("span");
+    who.className = "board__who";
+    who.textContent = s.name;
+
+    var score = document.createElement("span");
+    score.className = "board__score";
+    score.textContent = s.score;
+
+    li.appendChild(place);
+    li.appendChild(who);
+    li.appendChild(score);
+    list.appendChild(li);
+  });
+}
+
+function lbNote(text) {
+  var el = document.getElementById("boardNote");
+  if (el) el.textContent = text;
+}
+
+function lbFetchLive() {
+  return fetch(LB.liveUrl, { cache: "no-store" })
+    .then(function (r) { return r.ok ? r.text() : ""; })
+    .then(function (text) {
+      var lines = text.split("\n");
+      var changed = false;
+      for (var i = 0; i < lines.length; i++) {
+        if (!lines[i]) continue;
+        var ev;
+        try { ev = JSON.parse(lines[i]); } catch (e) { continue; }
+        if (!ev || ev.event !== "message" || !ev.message) continue;
+        var p = lbParse(ev.message);
+        if (p && lbAdd(p.name, p.score, p.ts, ev.id)) changed = true;
+      }
+      if (changed) lbRender();
+      return true;
+    })
+    .catch(function () { return false; });
+}
+
+function lbFetchArchive() {
+  return fetch(LB.archiveUrl, { cache: "no-store" })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) {
+      if (!data) return false;
+      var arr = data.scores || data;
+      if (!Array.isArray(arr)) return false;
+      var changed = false;
+      for (var i = 0; i < arr.length; i++) {
+        var s = arr[i];
+        if (!s) continue;
+        if (lbAdd(s.name, s.score, s.ts || 0, "a|" + (s.name || "") + "|" + s.score + "|" + (s.ts || 0))) changed = true;
+      }
+      if (changed) lbRender();
+      return true;
+    })
+    .catch(function () { return false; });
+}
+
+function lbLoad() {
+  if (LB.loaded) return;
+  LB.loaded = true;
+  Promise.all([lbFetchArchive(), lbFetchLive()]).then(function (res) {
+    var ok = res[0] || res[1];
+    var time = new Date();
+    lbNote(ok
+      ? "общий для всех · " + ("0" + time.getHours()).slice(-2) + ":" + ("0" + time.getMinutes()).slice(-2)
+      : "общий для всех · нет связи");
+  });
+}
+
+function lbHideSend() {
+  var box = document.getElementById("gameSendBox");
+  if (box) box.hidden = true;
+}
+
+function lbShowSend() {
+  var box = document.getElementById("gameSendBox");
+  var input = document.getElementById("gameName");
+  var btn = document.getElementById("gameSend");
+  var note = document.getElementById("gameSendNote");
+  if (!box) return;
+
+  if (GAME.score <= 0) {
+    box.hidden = true;
+    return;
+  }
+
+  box.hidden = false;
+  if (note) note.textContent = "";
+  if (btn) {
+    btn.disabled = false;
+    btn.textContent = "Отправить в рейтинг";
+  }
+  if (input && !input.value) input.value = read("prz_lb_name", "");
+}
+
+function lbSubmit() {
+  var input = document.getElementById("gameName");
+  var btn = document.getElementById("gameSend");
+  var note = document.getElementById("gameSendNote");
+  if (!input || !note) return;
+
+  var name = input.value.trim();
+  var err = nameProblem(name);
+  if (err) { note.textContent = err; return; }
+  if (GAME.score <= 0) { note.textContent = "Сначала набери очки."; return; }
+
+  var now = Date.now();
+  var wait = 20000 - (now - LB.lastSent);
+  if (wait > 0) {
+    note.textContent = "Подожди " + Math.ceil(wait / 1000) + " с перед следующей отправкой.";
+    return;
+  }
+
+  var msg = "LB|" + name + "|" + GAME.score + "|" + now;
+  note.textContent = "Отправляем…";
+  if (btn) btn.disabled = true;
+
+  fetch(LB.postUrl, { method: "POST", body: msg })
+    .then(function (r) {
+      if (!r.ok) throw new Error("bad status");
+      LB.lastSent = now;
+      write("prz_lb_last", now);
+      write("prz_lb_name", name);
+      lbAdd(name, GAME.score, now, "own|" + now);
+      lbRender();
+      note.textContent = "Готово! Ты в общем рейтинге.";
+      if (btn) btn.textContent = "Отправлено ✓";
+    })
+    .catch(function () {
+      note.textContent = "Не получилось отправить. Проверь интернет и попробуй ещё раз.";
+      if (btn) btn.disabled = false;
+    });
+}
+
+function initLeaderboard() {
+  var send = document.getElementById("gameSend");
+  var input = document.getElementById("gameName");
+  if (send) send.addEventListener("click", lbSubmit);
+  if (input) {
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); lbSubmit(); }
+    });
+  }
+
+  lbRender();
+  lbLoad();
+  setInterval(lbFetchLive, 60000);
+}
+
 /* ---------- старт ---------- */
 function init() {
   renderCatalog();
@@ -3982,6 +4432,7 @@ function init() {
   initTheme();
   initMusic();
   initGame();
+  initLeaderboard();
 
   /* чек */
   document.getElementById("receiptCopy").addEventListener("click", function () {
