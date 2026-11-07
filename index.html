@@ -970,12 +970,140 @@ body.light .jobform__cooldown { background: #f2fff7; border-color: #12803c; colo
 }
 .toast[hidden] { display: none !important; }
 
+/* ---------- Музыка ---------- */
+.music { position: relative; }
+.music__btn {
+  background: transparent;
+  border: 2px solid var(--green);
+  color: var(--lime);
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.music__btn:hover { background: rgba(47, 211, 95, .15); }
+.music__btn.is-on {
+  box-shadow: 0 0 0 3px rgba(182, 240, 106, .16), 0 0 18px rgba(47, 211, 95, .45);
+  animation: musicPulse 1.6s ease-in-out infinite;
+}
+@keyframes musicPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+.music__panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: min(280px, calc(100vw - 28px));
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .55);
+  z-index: 40;
+}
+.music__title { display: block; margin-bottom: 6px; color: var(--lime); }
+.music__note { margin: 0 0 12px; color: var(--muted); font-size: 13px; line-height: 1.45; }
+.music__row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.music__play {
+  background: transparent;
+  border: 2px solid var(--green);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 8px 14px;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+}
+.music__play:hover { background: rgba(47, 211, 95, .12); }
+.music__vol { color: var(--lime); font-weight: 800; font-size: 14px; }
+
+/* ---------- Мини-игра ---------- */
+.game {
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+.game__hud {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.game__hud b { color: var(--lime); }
+.game__sound {
+  margin-left: auto;
+  background: transparent;
+  border: 2px solid var(--green);
+  color: var(--lime);
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  font-size: 17px;
+  cursor: pointer;
+}
+.game__stage {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: radial-gradient(circle at 50% 120%, #123a22, #06120b 70%);
+}
+#gameCanvas {
+  display: block;
+  width: 100%;
+  height: clamp(320px, 52vh, 460px);
+  touch-action: none;
+  cursor: crosshair;
+}
+.game__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  padding: 20px;
+  background: radial-gradient(circle at 50% 50%, rgba(4, 12, 7, .5), rgba(4, 12, 7, .86));
+  backdrop-filter: blur(2px);
+}
+.game__overlay[hidden] { display: none; }
+.game__big { font-size: clamp(24px, 4vw, 34px); font-weight: 900; color: #fff; margin: 0; }
+.game__hint { color: var(--muted); margin: 0 0 10px; max-width: 480px; }
+.game__hint b { color: var(--lime); }
+
 /* ---------- Телефон ---------- */
 @media (max-width: 860px) {
   .hero { grid-template-columns: 1fr; text-align: center; padding-top: 34px; }
   .hero__actions, .hero__joke, .sold { justify-content: center; margin-left: auto; margin-right: auto; }
   .nav { width: 100%; margin-left: 0; justify-content: center; }
+  .game__hud { gap: 10px; font-size: 14px; }
+  .music__panel { right: auto; left: 0; }
 }
+
+/* ---------- Светлая тема: музыка и игра ---------- */
+body.light .music__btn, body.light .game__sound { color: #12803c; }
+body.light .music__panel { background: #fff; border-color: #bfe4cc; }
+body.light .music__title { color: #12803c; }
+body.light .music__note { color: #3d6b52; }
+body.light .music__play { color: #0d2b19; }
+body.light .music__vol { color: #12803c; }
+body.light .game { background: #fff; border-color: #bfe4cc; }
+body.light .game__hud { color: #2f5c42; }
+body.light .game__hud b { color: #12803c; }
+body.light .game__stage { background: radial-gradient(circle at 50% 120%, #d9f5e2, #f4fff8 70%); }
+body.light .game__overlay { background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, .55), rgba(244, 255, 248, .9)); }
+body.light .game__big { color: #0d2b19; }
+body.light .game__hint { color: #2f5c42; }
+body.light .game__hint b { color: #12803c; }
 
 </style>
 </head>
@@ -995,11 +1123,24 @@ body.light .jobform__cooldown { background: #f2fff7; border-color: #12803c; colo
   </a>
   <nav class="nav">
     <a href="#catalog">Каталог</a>
+    <a href="#game">Игра</a>
     <a href="#memes">Мемы</a>
     <a href="#how">Доставка</a>
     <a href="#team">Команда</a>
     <a href="#reviews">Отзывы</a>
   </nav>
+  <div class="music" id="musicBox">
+    <button class="music__btn" id="musicBtn" type="button" title="Музыка" aria-expanded="false" aria-controls="musicPanel">🎵</button>
+    <div class="music__panel" id="musicPanel" hidden>
+      <b class="music__title">Арбузный лоу-фай</b>
+      <p class="music__note" id="musicNote">Включи, если хочешь настроение. По умолчанию выключено.</p>
+      <div class="music__row">
+        <button class="music__play" id="musicPlay" type="button">▶ Включить</button>
+        <span class="music__vol" id="musicVolOut">45%</span>
+      </div>
+      <input class="range" id="musicVol" type="range" min="0" max="100" value="45" aria-label="Громкость музыки">
+    </div>
+  </div>
   <button class="theme-toggle" id="themeToggle" type="button" title="Сменить тему">🌙</button>
   <span class="live-sold" title="Столько арбузов продано на сайте">🍉 продано: <b id="soldTop">0</b></span>
   <button class="cart-btn" id="cartOpen" type="button" onclick="openCart()">
@@ -1133,6 +1274,30 @@ body.light .jobform__cooldown { background: #f2fff7; border-color: #12803c; colo
       <div class="quiz__options" id="quizOptions"></div>
       <p class="quiz__score" id="quizScore"></p>
       <button class="btn btn--big" id="quizBtn" type="button">Начать</button>
+    </div>
+  </section>
+
+  <section class="section" id="game">
+    <h2 class="section__title">Арбузный слайсер</h2>
+    <p class="section__sub">Проведи мышкой (или пальцем) по арбузу — разрежешь. Свиной арбуз не трогай: он взрывается. Золотой даёт втрое больше очков.</p>
+
+    <div class="game">
+      <div class="game__hud">
+        <span>Счёт: <b id="gameScore">0</b></span>
+        <span>Рекорд: <b id="gameBest">0</b></span>
+        <span>Жизни: <b id="gameLives">❤️❤️❤️</b></span>
+        <span>Комбо: <b id="gameCombo">x1</b></span>
+        <button class="game__sound" id="gameSound" type="button" title="Звук игры">🔊</button>
+      </div>
+
+      <div class="game__stage">
+        <canvas id="gameCanvas" width="900" height="460" aria-label="Игра: режь арбузы"></canvas>
+        <div class="game__overlay" id="gameOverlay">
+          <p class="game__big" id="gameOverTitle">Готов резать?</p>
+          <p class="game__hint" id="gameOverHint">Тащи мышкой по арбузам. Свиной 🐷 — не трогай, будет взрыв.</p>
+          <button class="btn btn--big" id="gameStart" type="button">Играть</button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -2902,6 +3067,877 @@ function initTheme() {
   });
 }
 
+/* ---------- музыка: синтез в браузере, без файлов ---------- */
+var MUSIC = {
+  ctx: null,
+  master: null,
+  musicGain: null,
+  sfxGain: null,
+  noise: null,
+  on: false,
+  timer: null,
+  step: 0,
+  nextTime: 0,
+  vol: 45
+};
+
+var MUSIC_BPM = 86;
+var MUSIC_STEP = 60 / MUSIC_BPM / 4;
+
+(function musicPrefs() {
+  var v = read("prz_music_vol", 45);
+  if (typeof v === "number" && v >= 0 && v <= 100) MUSIC.vol = Math.round(v);
+})();
+
+/* аккорды: Am7 — Fmaj7 — Cmaj7 — G7 */
+var CHORDS = [
+  { bass: 45, notes: [57, 60, 64, 67] },
+  { bass: 41, notes: [53, 57, 60, 64] },
+  { bass: 48, notes: [52, 55, 59, 64] },
+  { bass: 43, notes: [55, 59, 62, 65] }
+];
+
+/* мелодия на 4 такта, 0 = пауза */
+var MELODY = [
+  76, 0, 0, 74, 0, 72, 0, 0, 69, 0, 72, 0, 74, 0, 0, 0,
+  72, 0, 0, 69, 0, 67, 0, 0, 64, 0, 67, 0, 69, 0, 0, 0,
+  67, 0, 69, 0, 72, 0, 74, 0, 72, 0, 69, 0, 67, 0, 0, 0,
+  74, 0, 72, 0, 69, 0, 67, 0, 65, 0, 67, 0, 69, 0, 71, 0
+];
+
+function midiToFreq(m) { return 440 * Math.pow(2, (m - 69) / 12); }
+
+function musicVolumeGain() {
+  var v = Math.max(0, Math.min(100, MUSIC.vol)) / 100;
+  return Math.max(0.0001, v * v * 0.55);
+}
+
+function audioCtx() {
+  if (!MUSIC.ctx) {
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    MUSIC.ctx = new AC();
+
+    MUSIC.master = MUSIC.ctx.createGain();
+    MUSIC.master.gain.value = 0.9;
+    MUSIC.master.connect(MUSIC.ctx.destination);
+
+    MUSIC.musicGain = MUSIC.ctx.createGain();
+    MUSIC.musicGain.gain.value = 0.0001;
+    MUSIC.musicGain.connect(MUSIC.master);
+
+    MUSIC.sfxGain = MUSIC.ctx.createGain();
+    MUSIC.sfxGain.gain.value = 0.5;
+    MUSIC.sfxGain.connect(MUSIC.master);
+
+    MUSIC.noise = MUSIC.ctx.createBuffer(1, Math.floor(MUSIC.ctx.sampleRate * 0.5), MUSIC.ctx.sampleRate);
+    var data = MUSIC.noise.getChannelData(0);
+    for (var i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+  }
+  if (MUSIC.ctx.state === "suspended") {
+    try { MUSIC.ctx.resume(); } catch (e) {}
+  }
+  return MUSIC.ctx;
+}
+
+function playTone(freq, time, dur, type, gain, dest) {
+  var ctx = MUSIC.ctx;
+  if (!ctx) return;
+  var o = ctx.createOscillator();
+  var g = ctx.createGain();
+  o.type = type || "triangle";
+  o.frequency.setValueAtTime(freq, time);
+  g.gain.setValueAtTime(0.0001, time);
+  g.gain.exponentialRampToValueAtTime(Math.max(0.001, gain), time + 0.015);
+  g.gain.exponentialRampToValueAtTime(0.0001, time + dur);
+  o.connect(g);
+  g.connect(dest || MUSIC.musicGain);
+  o.start(time);
+  o.stop(time + dur + 0.05);
+}
+
+function playPad(freqs, time, dur) {
+  var ctx = MUSIC.ctx;
+  if (!ctx) return;
+  var filter = ctx.createBiquadFilter();
+  filter.type = "lowpass";
+  filter.frequency.value = 950;
+  filter.Q.value = 0.6;
+  var g = ctx.createGain();
+  g.gain.setValueAtTime(0.0001, time);
+  g.gain.linearRampToValueAtTime(0.05, time + 0.4);
+  g.gain.linearRampToValueAtTime(0.0001, time + dur);
+  filter.connect(g);
+  g.connect(MUSIC.musicGain);
+  for (var i = 0; i < freqs.length; i++) {
+    var o = ctx.createOscillator();
+    o.type = "triangle";
+    o.frequency.value = freqs[i];
+    o.detune.value = (i % 2 === 0) ? -5 : 5;
+    o.connect(filter);
+    o.start(time);
+    o.stop(time + dur + 0.1);
+  }
+}
+
+function playKick(time) {
+  var ctx = MUSIC.ctx;
+  if (!ctx) return;
+  var o = ctx.createOscillator();
+  var g = ctx.createGain();
+  o.type = "sine";
+  o.frequency.setValueAtTime(130, time);
+  o.frequency.exponentialRampToValueAtTime(45, time + 0.16);
+  g.gain.setValueAtTime(0.4, time);
+  g.gain.exponentialRampToValueAtTime(0.0001, time + 0.22);
+  o.connect(g);
+  g.connect(MUSIC.musicGain);
+  o.start(time);
+  o.stop(time + 0.25);
+}
+
+function playHat(time, gain) {
+  var ctx = MUSIC.ctx;
+  if (!ctx) return;
+  var src = ctx.createBufferSource();
+  src.buffer = MUSIC.noise;
+  var f = ctx.createBiquadFilter();
+  f.type = "highpass";
+  f.frequency.value = 7500;
+  var g = ctx.createGain();
+  g.gain.setValueAtTime(gain, time);
+  g.gain.exponentialRampToValueAtTime(0.0001, time + 0.05);
+  src.connect(f);
+  f.connect(g);
+  g.connect(MUSIC.musicGain);
+  src.start(time);
+  src.stop(time + 0.06);
+}
+
+function scheduleStep(step, t) {
+  var bar = Math.floor(step / 16) % 4;
+  var s = step % 16;
+  var ch = CHORDS[bar];
+
+  if (s === 0) {
+    playKick(t);
+    playTone(midiToFreq(ch.bass), t, 0.6, "sine", 0.24);
+    playPad(ch.notes.map(midiToFreq), t, MUSIC_STEP * 15.5);
+  }
+  if (s === 8) {
+    playKick(t);
+    playTone(midiToFreq(ch.bass + 12), t, 0.35, "sine", 0.1);
+  }
+  if (s % 2 === 0) {
+    var idx = (s / 2) % ch.notes.length;
+    var oct = (s === 6 || s === 14) ? 12 : 0;
+    playTone(midiToFreq(ch.notes[idx] + 12 + oct), t, 0.32, "triangle", 0.085);
+  }
+  if (s % 4 === 2) playHat(t, 0.05);
+
+  var mel = MELODY[step];
+  if (mel) playTone(midiToFreq(mel), t, 0.55, "triangle", 0.06);
+}
+
+function musicTick() {
+  var ctx = MUSIC.ctx;
+  if (!ctx || !MUSIC.on) return;
+  while (MUSIC.nextTime < ctx.currentTime + 0.3) {
+    scheduleStep(MUSIC.step, MUSIC.nextTime);
+    MUSIC.nextTime += MUSIC_STEP;
+    MUSIC.step = (MUSIC.step + 1) % 64;
+  }
+}
+
+function startMusic() {
+  var ctx = audioCtx();
+  if (!ctx) { toast("Браузер не поддерживает звук"); return; }
+  if (MUSIC.on) return;
+
+  MUSIC.on = true;
+  MUSIC.step = 0;
+  MUSIC.nextTime = ctx.currentTime + 0.15;
+
+  MUSIC.musicGain.gain.cancelScheduledValues(ctx.currentTime);
+  MUSIC.musicGain.gain.setValueAtTime(0.0001, ctx.currentTime);
+  MUSIC.musicGain.gain.linearRampToValueAtTime(musicVolumeGain(), ctx.currentTime + 0.6);
+
+  MUSIC.timer = setInterval(musicTick, 60);
+  musicTick();
+  updateMusicUI();
+}
+
+function stopMusic() {
+  if (!MUSIC.on) return;
+  MUSIC.on = false;
+  if (MUSIC.timer) {
+    clearInterval(MUSIC.timer);
+    MUSIC.timer = null;
+  }
+  var ctx = MUSIC.ctx;
+  if (ctx && MUSIC.musicGain) {
+    MUSIC.musicGain.gain.cancelScheduledValues(ctx.currentTime);
+    MUSIC.musicGain.gain.setTargetAtTime(0.0001, ctx.currentTime, 0.08);
+  }
+  updateMusicUI();
+}
+
+function setMusicVolume(v) {
+  MUSIC.vol = Math.max(0, Math.min(100, Math.round(v)));
+  write("prz_music_vol", MUSIC.vol);
+  var ctx = MUSIC.ctx;
+  if (ctx && MUSIC.musicGain) {
+    MUSIC.musicGain.gain.cancelScheduledValues(ctx.currentTime);
+    MUSIC.musicGain.gain.setTargetAtTime(MUSIC.on ? musicVolumeGain() : 0.0001, ctx.currentTime, 0.05);
+  }
+  updateMusicUI();
+}
+
+function updateMusicUI() {
+  var btn = document.getElementById("musicBtn");
+  var play = document.getElementById("musicPlay");
+  var note = document.getElementById("musicNote");
+  var volOut = document.getElementById("musicVolOut");
+  var vol = document.getElementById("musicVol");
+
+  if (btn) {
+    btn.textContent = MUSIC.on ? "🎶" : "🎵";
+    btn.classList.toggle("is-on", MUSIC.on);
+    btn.title = MUSIC.on ? "Музыка играет — нажми, чтобы настроить" : "Музыка выключена";
+  }
+  if (play) play.textContent = MUSIC.on ? "⏸ Выключить" : "▶ Включить";
+  if (note) {
+    note.textContent = MUSIC.on
+      ? "Играет. Громкость — ползунком ниже."
+      : "Включи, если хочешь настроение. По умолчанию выключено.";
+  }
+  if (volOut) volOut.textContent = MUSIC.vol + "%";
+  if (vol) vol.value = MUSIC.vol;
+}
+
+function initMusic() {
+  var btn = document.getElementById("musicBtn");
+  var panel = document.getElementById("musicPanel");
+  var play = document.getElementById("musicPlay");
+  var vol = document.getElementById("musicVol");
+  if (!btn || !panel || !play || !vol) return;
+
+  updateMusicUI();
+
+  btn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    panel.hidden = !panel.hidden;
+    btn.setAttribute("aria-expanded", panel.hidden ? "false" : "true");
+  });
+
+  play.addEventListener("click", function () {
+    if (MUSIC.on) stopMusic(); else startMusic();
+  });
+
+  vol.addEventListener("input", function () {
+    setMusicVolume(parseInt(this.value, 10) || 0);
+  });
+
+  document.addEventListener("click", function (e) {
+    if (panel.hidden) return;
+    if (panel.contains(e.target) || btn.contains(e.target)) return;
+    panel.hidden = true;
+    btn.setAttribute("aria-expanded", "false");
+  });
+}
+
+/* ---------- мини-игра «Арбузный слайсер» ---------- */
+var GAME = {
+  canvas: null,
+  ctx: null,
+  dpr: 1,
+  W: 900,
+  H: 460,
+  running: false,
+  over: false,
+  raf: 0,
+  lastTs: 0,
+  score: 0,
+  best: 0,
+  lives: 3,
+  combo: 1,
+  lastSliceAt: -99,
+  objects: [],
+  particles: [],
+  texts: [],
+  splats: [],
+  trail: [],
+  pointerDown: false,
+  px: 0,
+  py: 0,
+  spawnTimer: 0.6,
+  elapsed: 0,
+  shake: 0,
+  flash: 0,
+  sound: true
+};
+
+(function gamePrefs() {
+  var b = read("prz_game_best", 0);
+  if (typeof b === "number" && b > 0) GAME.best = Math.floor(b);
+  GAME.sound = read("prz_game_sound", true) !== false;
+})();
+
+function gameResize() {
+  var c = GAME.canvas;
+  if (!c) return;
+  var rect = c.getBoundingClientRect();
+  var w = Math.max(280, Math.round(rect.width));
+  var h = Math.max(240, Math.round(rect.height));
+  GAME.dpr = Math.min(2, window.devicePixelRatio || 1);
+  GAME.W = w;
+  GAME.H = h;
+  c.width = Math.round(w * GAME.dpr);
+  c.height = Math.round(h * GAME.dpr);
+  GAME.ctx.setTransform(GAME.dpr, 0, 0, GAME.dpr, 0, 0);
+  if (!GAME.running) gameDrawIdle();
+}
+
+function gamePos(e) {
+  var rect = GAME.canvas.getBoundingClientRect();
+  return {
+    x: (e.clientX - rect.left) * (GAME.W / rect.width),
+    y: (e.clientY - rect.top) * (GAME.H / rect.height)
+  };
+}
+
+function gameUpdateHud() {
+  var score = document.getElementById("gameScore");
+  var best = document.getElementById("gameBest");
+  var lives = document.getElementById("gameLives");
+  var combo = document.getElementById("gameCombo");
+  var sound = document.getElementById("gameSound");
+
+  if (score) score.textContent = GAME.score;
+  if (best) best.textContent = GAME.best;
+  if (lives) {
+    var hearts = "";
+    for (var i = 0; i < 3; i++) hearts += (i < GAME.lives) ? "❤️" : "🖤";
+    lives.textContent = hearts;
+  }
+  if (combo) combo.textContent = "x" + GAME.combo;
+  if (sound) sound.textContent = GAME.sound ? "🔊" : "🔇";
+}
+
+function gameBurst(x, y, count, colors) {
+  for (var i = 0; i < count; i++) {
+    var a = Math.random() * Math.PI * 2;
+    var sp = 60 + Math.random() * 330;
+    var life = 0.45 + Math.random() * 0.55;
+    GAME.particles.push({
+      x: x,
+      y: y,
+      vx: Math.cos(a) * sp,
+      vy: Math.sin(a) * sp - 70,
+      r: 2 + Math.random() * 5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      life: life,
+      maxLife: life
+    });
+  }
+}
+
+function gameSplat(x, y, r, color) {
+  GAME.splats.push({ x: x, y: y, r: r, color: color, life: 0.9, maxLife: 0.9 });
+}
+
+function gameText(x, y, text, color) {
+  GAME.texts.push({ x: x, y: y, text: text, color: color, life: 0.95, maxLife: 0.95 });
+}
+
+function spawnMelon() {
+  var W = GAME.W;
+  var H = GAME.H;
+  var r = 24 + Math.random() * 14;
+  var x = 60 + Math.random() * Math.max(40, W - 120);
+  var g = 1500;
+  var peak = H * (0.42 + Math.random() * 0.32);
+  var vy = -Math.sqrt(2 * g * peak);
+  var vx = (W / 2 - x) * 0.35 + (Math.random() - 0.5) * 90;
+  var type = "melon";
+  var roll = Math.random();
+  if (roll < 0.13) type = "bomb";
+  else if (roll < 0.21) type = "gold";
+
+  GAME.objects.push({
+    x: x,
+    y: H + r + 10,
+    vx: vx,
+    vy: vy,
+    r: r,
+    type: type,
+    rot: Math.random() * Math.PI * 2,
+    vr: (Math.random() - 0.5) * 2.2
+  });
+}
+
+function segDist(px, py, x1, y1, x2, y2) {
+  var dx = x2 - x1;
+  var dy = y2 - y1;
+  var len2 = dx * dx + dy * dy;
+  var t = len2 > 0 ? ((px - x1) * dx + (py - y1) * dy) / len2 : 0;
+  t = Math.max(0, Math.min(1, t));
+  var qx = x1 + dx * t;
+  var qy = y1 + dy * t;
+  var ex = px - qx;
+  var ey = py - qy;
+  return Math.sqrt(ex * ex + ey * ey);
+}
+
+function gameSliceSegment(x1, y1, x2, y2) {
+  for (var i = GAME.objects.length - 1; i >= 0; i--) {
+    var o = GAME.objects[i];
+    if (segDist(o.x, o.y, x1, y1, x2, y2) < o.r * 0.92) sliceMelon(o);
+  }
+}
+
+function gameSliceAt(x, y) {
+  for (var i = GAME.objects.length - 1; i >= 0; i--) {
+    var o = GAME.objects[i];
+    var dx = x - o.x;
+    var dy = y - o.y;
+    if (dx * dx + dy * dy < o.r * o.r) sliceMelon(o);
+  }
+}
+
+function sliceMelon(o) {
+  var idx = GAME.objects.indexOf(o);
+  if (idx < 0) return;
+  GAME.objects.splice(idx, 1);
+
+  if (o.type === "bomb") {
+    GAME.lives -= 1;
+    GAME.combo = 1;
+    GAME.shake = 18;
+    GAME.flash = 0.85;
+    gameBurst(o.x, o.y, 26, ["#ff4d5a", "#ff8fa3", "#2b0a0e", "#ffd166"]);
+    sfxBomb();
+    gameUpdateHud();
+    if (GAME.lives <= 0) gameOver();
+    return;
+  }
+
+  var now = GAME.elapsed;
+  GAME.combo = (now - GAME.lastSliceAt < 1.5) ? Math.min(5, GAME.combo + 1) : 1;
+  GAME.lastSliceAt = now;
+
+  var pts = (o.type === "gold" ? 50 : 10) * GAME.combo;
+  GAME.score += pts;
+
+  gameBurst(
+    o.x, o.y,
+    o.type === "gold" ? 24 : 16,
+    o.type === "gold" ? ["#ffd166", "#fff3b0", "#ffb703"] : ["#ff4d5a", "#ff8fa3", "#2fd35f", "#b6f06a"]
+  );
+  gameSplat(o.x, o.y, o.r * 1.7, o.type === "gold" ? "#ffd166" : "#ff4d5a");
+  gameText(o.x, o.y - 12, "+" + pts + (GAME.combo > 1 ? " x" + GAME.combo : ""), o.type === "gold" ? "#ffd166" : "#eafff1");
+
+  if (o.type === "gold") sfxGold(); else sfxSlice();
+  gameUpdateHud();
+}
+
+function gameUpdate(dt) {
+  GAME.elapsed += dt;
+
+  GAME.spawnTimer -= dt;
+  if (GAME.spawnTimer <= 0) {
+    var gap = Math.max(0.45, 0.95 - GAME.elapsed * 0.014);
+    GAME.spawnTimer = gap * (0.7 + Math.random() * 0.7);
+    spawnMelon();
+    if (GAME.elapsed > 12 && Math.random() < 0.35) spawnMelon();
+  }
+
+  var g = 1500;
+  var i, o;
+  for (i = GAME.objects.length - 1; i >= 0; i--) {
+    o = GAME.objects[i];
+    o.vy += g * dt;
+    o.x += o.vx * dt;
+    o.y += o.vy * dt;
+    o.rot += o.vr * dt;
+    if (o.y - o.r > GAME.H + 80) {
+      GAME.objects.splice(i, 1);
+      if (o.type !== "bomb") GAME.combo = 1;
+    }
+  }
+
+  for (i = GAME.particles.length - 1; i >= 0; i--) {
+    var p = GAME.particles[i];
+    p.vy += 950 * dt;
+    p.x += p.vx * dt;
+    p.y += p.vy * dt;
+    p.life -= dt;
+    if (p.life <= 0) GAME.particles.splice(i, 1);
+  }
+
+  for (i = GAME.texts.length - 1; i >= 0; i--) {
+    var t = GAME.texts[i];
+    t.y -= 42 * dt;
+    t.life -= dt;
+    if (t.life <= 0) GAME.texts.splice(i, 1);
+  }
+
+  for (i = GAME.splats.length - 1; i >= 0; i--) {
+    var s = GAME.splats[i];
+    s.life -= dt;
+    if (s.life <= 0) GAME.splats.splice(i, 1);
+  }
+
+  if (GAME.shake > 0) GAME.shake = Math.max(0, GAME.shake - dt * 45);
+  if (GAME.flash > 0) GAME.flash = Math.max(0, GAME.flash - dt * 2.2);
+
+  if (GAME.elapsed - GAME.lastSliceAt > 1.6 && GAME.combo > 1) {
+    GAME.combo = 1;
+    gameUpdateHud();
+  }
+}
+
+function gameDrawObject(o) {
+  var ctx = GAME.ctx;
+  ctx.save();
+  ctx.translate(o.x, o.y);
+  ctx.rotate(o.rot);
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  if (o.type === "bomb") {
+    ctx.globalAlpha = 0.5;
+    ctx.beginPath();
+    ctx.arc(0, 0, o.r * 1.2, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(255,60,80,.4)";
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.font = Math.round(o.r * 2.05) + "px serif";
+    ctx.fillText("🐷", 0, 2);
+  } else if (o.type === "gold") {
+    ctx.shadowColor = "rgba(255,209,102,.95)";
+    ctx.shadowBlur = 22;
+    ctx.font = Math.round(o.r * 2.05) + "px serif";
+    ctx.fillText("🍉", 0, 2);
+    ctx.shadowBlur = 0;
+    ctx.globalAlpha = 0.9;
+    ctx.font = Math.round(o.r * 0.8) + "px serif";
+    ctx.fillText("✨", o.r * 0.95, -o.r * 0.95);
+    ctx.globalAlpha = 1;
+  } else {
+    ctx.shadowColor = "rgba(47,211,95,.7)";
+    ctx.shadowBlur = 16;
+    ctx.font = Math.round(o.r * 2.05) + "px serif";
+    ctx.fillText("🍉", 0, 2);
+  }
+
+  ctx.restore();
+}
+
+function gameDraw() {
+  var ctx = GAME.ctx;
+  if (!ctx) return;
+  var W = GAME.W;
+  var H = GAME.H;
+  var i, p;
+
+  ctx.clearRect(0, 0, W, H);
+
+  var sx = 0;
+  var sy = 0;
+  if (GAME.shake > 0.2) {
+    sx = (Math.random() - 0.5) * GAME.shake;
+    sy = (Math.random() - 0.5) * GAME.shake;
+  }
+
+  ctx.save();
+  ctx.translate(sx, sy);
+
+  for (i = 0; i < GAME.splats.length; i++) {
+    p = GAME.splats[i];
+    ctx.globalAlpha = 0.25 * Math.max(0, p.life / p.maxLife);
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  for (i = 0; i < GAME.objects.length; i++) gameDrawObject(GAME.objects[i]);
+
+  for (i = 0; i < GAME.particles.length; i++) {
+    p = GAME.particles[i];
+    ctx.globalAlpha = Math.max(0, p.life / p.maxLife);
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.font = "900 20px 'Segoe UI', system-ui, sans-serif";
+  for (i = 0; i < GAME.texts.length; i++) {
+    p = GAME.texts[i];
+    ctx.globalAlpha = Math.max(0, p.life / p.maxLife);
+    ctx.fillStyle = p.color;
+    ctx.fillText(p.text, p.x, p.y);
+  }
+  ctx.globalAlpha = 1;
+
+  var now = performance.now();
+  var pts = [];
+  for (i = 0; i < GAME.trail.length; i++) {
+    if (now - GAME.trail[i].t < 220) pts.push(GAME.trail[i]);
+  }
+  if (pts.length > 1) {
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    for (i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+    ctx.strokeStyle = "rgba(182,240,106,.28)";
+    ctx.lineWidth = 14;
+    ctx.stroke();
+    ctx.strokeStyle = "rgba(255,255,255,.85)";
+    ctx.lineWidth = 4;
+    ctx.stroke();
+  }
+
+  ctx.restore();
+
+  if (GAME.flash > 0) {
+    ctx.fillStyle = "rgba(255,60,80," + (GAME.flash * 0.35) + ")";
+    ctx.fillRect(0, 0, W, H);
+  }
+}
+
+function gameDrawIdle() {
+  var ctx = GAME.ctx;
+  if (!ctx) return;
+  ctx.clearRect(0, 0, GAME.W, GAME.H);
+
+  var spots = [
+    [0.16, 0.62, 36, -0.25],
+    [0.36, 0.4, 26, 0.3],
+    [0.67, 0.58, 42, 0.15],
+    [0.86, 0.33, 22, -0.4],
+    [0.52, 0.76, 20, 0.5]
+  ];
+
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  for (var i = 0; i < spots.length; i++) {
+    var s = spots[i];
+    ctx.save();
+    ctx.translate(GAME.W * s[0], GAME.H * s[1]);
+    ctx.rotate(s[3]);
+    ctx.globalAlpha = 0.55;
+    ctx.font = Math.round(s[2] * 2.1) + "px serif";
+    ctx.fillText("🍉", 0, 0);
+    ctx.restore();
+  }
+  ctx.globalAlpha = 1;
+}
+
+function gameFrame(ts) {
+  if (!GAME.running) return;
+  if (!GAME.lastTs) GAME.lastTs = ts;
+  var dt = Math.min(0.05, (ts - GAME.lastTs) / 1000);
+  GAME.lastTs = ts;
+  gameUpdate(dt);
+  gameDraw();
+  GAME.raf = requestAnimationFrame(gameFrame);
+}
+
+function gameStart() {
+  audioCtx();
+
+  GAME.running = true;
+  GAME.over = false;
+  GAME.score = 0;
+  GAME.lives = 3;
+  GAME.combo = 1;
+  GAME.lastSliceAt = -99;
+  GAME.objects = [];
+  GAME.particles = [];
+  GAME.texts = [];
+  GAME.splats = [];
+  GAME.trail = [];
+  GAME.spawnTimer = 0.5;
+  GAME.elapsed = 0;
+  GAME.shake = 0;
+  GAME.flash = 0;
+  GAME.pointerDown = false;
+  GAME.lastTs = 0;
+
+  document.getElementById("gameOverlay").hidden = true;
+  document.getElementById("gameOverTitle").textContent = "Готов резать?";
+  document.getElementById("gameOverHint").textContent = "Тащи мышкой по арбузам. Свиной 🐷 — не трогай, будет взрыв.";
+  document.getElementById("gameStart").textContent = "Играть";
+
+  gameUpdateHud();
+  cancelAnimationFrame(GAME.raf);
+  GAME.raf = requestAnimationFrame(gameFrame);
+}
+
+function gameOver() {
+  GAME.running = false;
+  GAME.over = true;
+  cancelAnimationFrame(GAME.raf);
+  GAME.raf = 0;
+
+  var isRecord = GAME.score > GAME.best;
+  if (isRecord) {
+    GAME.best = GAME.score;
+    write("prz_game_best", GAME.best);
+  }
+  gameUpdateHud();
+  gameDraw();
+
+  document.getElementById("gameOverTitle").textContent = "Игра окончена";
+  document.getElementById("gameOverHint").innerHTML =
+    "Счёт: <b>" + GAME.score + "</b> · Рекорд: <b>" + GAME.best + "</b>" +
+    (isRecord ? "<br>Новый рекорд! 🏆" : "");
+  document.getElementById("gameStart").textContent = "Ещё раз";
+  document.getElementById("gameOverlay").hidden = false;
+
+  sfxGameOver();
+}
+
+function gamePointerDown(e) {
+  if (!GAME.running) return;
+  e.preventDefault();
+  try { GAME.canvas.setPointerCapture(e.pointerId); } catch (err) {}
+  var p = gamePos(e);
+  GAME.pointerDown = true;
+  GAME.px = p.x;
+  GAME.py = p.y;
+  GAME.trail.push({ x: p.x, y: p.y, t: performance.now() });
+  if (GAME.trail.length > 80) GAME.trail.splice(0, GAME.trail.length - 80);
+  gameSliceAt(p.x, p.y);
+}
+
+function gamePointerMove(e) {
+  if (!GAME.running) return;
+  var p = gamePos(e);
+  if (GAME.pointerDown) {
+    GAME.trail.push({ x: p.x, y: p.y, t: performance.now() });
+    if (GAME.trail.length > 80) GAME.trail.splice(0, GAME.trail.length - 80);
+    gameSliceSegment(GAME.px, GAME.py, p.x, p.y);
+  }
+  GAME.px = p.x;
+  GAME.py = p.y;
+}
+
+function gamePointerUp() {
+  GAME.pointerDown = false;
+}
+
+function sfxSlice() {
+  if (!GAME.sound) return;
+  var ctx = audioCtx();
+  if (!ctx) return;
+  var t = ctx.currentTime;
+  var src = ctx.createBufferSource();
+  src.buffer = MUSIC.noise;
+  var f = ctx.createBiquadFilter();
+  f.type = "bandpass";
+  f.frequency.setValueAtTime(1900, t);
+  f.frequency.exponentialRampToValueAtTime(420, t + 0.14);
+  f.Q.value = 1.2;
+  var g = ctx.createGain();
+  g.gain.setValueAtTime(0.45, t);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.15);
+  src.connect(f);
+  f.connect(g);
+  g.connect(MUSIC.sfxGain);
+  src.start(t);
+  src.stop(t + 0.16);
+}
+
+function sfxBomb() {
+  if (!GAME.sound) return;
+  var ctx = audioCtx();
+  if (!ctx) return;
+  var t = ctx.currentTime;
+
+  var o = ctx.createOscillator();
+  var g = ctx.createGain();
+  o.type = "sine";
+  o.frequency.setValueAtTime(160, t);
+  o.frequency.exponentialRampToValueAtTime(30, t + 0.5);
+  g.gain.setValueAtTime(0.8, t);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
+  o.connect(g);
+  g.connect(MUSIC.sfxGain);
+  o.start(t);
+  o.stop(t + 0.6);
+
+  var src = ctx.createBufferSource();
+  src.buffer = MUSIC.noise;
+  var f = ctx.createBiquadFilter();
+  f.type = "lowpass";
+  f.frequency.value = 900;
+  var g2 = ctx.createGain();
+  g2.gain.setValueAtTime(0.5, t);
+  g2.gain.exponentialRampToValueAtTime(0.0001, t + 0.4);
+  src.connect(f);
+  f.connect(g2);
+  g2.connect(MUSIC.sfxGain);
+  src.start(t);
+  src.stop(t + 0.45);
+}
+
+function sfxGold() {
+  if (!GAME.sound) return;
+  var ctx = audioCtx();
+  if (!ctx) return;
+  var t = ctx.currentTime;
+  playTone(880, t, 0.12, "triangle", 0.14, MUSIC.sfxGain);
+  playTone(1320, t + 0.09, 0.2, "triangle", 0.12, MUSIC.sfxGain);
+}
+
+function sfxGameOver() {
+  if (!GAME.sound) return;
+  var ctx = audioCtx();
+  if (!ctx) return;
+  var t = ctx.currentTime;
+  playTone(392, t, 0.18, "triangle", 0.15, MUSIC.sfxGain);
+  playTone(330, t + 0.16, 0.18, "triangle", 0.15, MUSIC.sfxGain);
+  playTone(262, t + 0.32, 0.34, "triangle", 0.15, MUSIC.sfxGain);
+}
+
+function initGame() {
+  var canvas = document.getElementById("gameCanvas");
+  if (!canvas) return;
+
+  GAME.canvas = canvas;
+  GAME.ctx = canvas.getContext("2d");
+
+  gameResize();
+  window.addEventListener("resize", function () { gameResize(); });
+
+  canvas.addEventListener("pointerdown", gamePointerDown);
+  canvas.addEventListener("pointermove", gamePointerMove);
+  canvas.addEventListener("pointerup", gamePointerUp);
+  canvas.addEventListener("pointercancel", gamePointerUp);
+  window.addEventListener("pointerup", gamePointerUp);
+
+  document.getElementById("gameStart").addEventListener("click", gameStart);
+
+  document.getElementById("gameSound").addEventListener("click", function () {
+    GAME.sound = !GAME.sound;
+    write("prz_game_sound", GAME.sound);
+    gameUpdateHud();
+    toast(GAME.sound ? "Звук игры включён" : "Звук игры выключен");
+  });
+
+  gameUpdateHud();
+  gameDrawIdle();
+}
+
 /* ---------- старт ---------- */
 function init() {
   renderCatalog();
@@ -2944,6 +3980,8 @@ function init() {
   renderSeason();
 
   initTheme();
+  initMusic();
+  initGame();
 
   /* чек */
   document.getElementById("receiptCopy").addEventListener("click", function () {
